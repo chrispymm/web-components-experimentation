@@ -66,20 +66,37 @@
       <button>Add page</button>
   </flow-item>
 
-  <flow-item id="G" data-next="H" data-prev="D">
+  <flow-item id="G" data-next="E" data-prev="D">
     <h2><a href="#">
         <span class="sr-only">Edit: </span>Branching point 1<span class="sr-only">, 3 branches</span>
     </a></h2>
       <button>Page Actions</button>
-      <button>Add page</button>
+
     <ul>
-      <li role="row" id="G-1"><div><h3><a href="#">Do you like marmite <b>is</b> Love it</a></h3></div></li>
-      <li role="row" id="G-2"><div><h3><a href="#">Do you like marmite <b>is</b> Hate it</a></h3></div></li>
-      <li role="row" id="G-3"><div><h3><a href="#">Do you like marmite <b>is</b> Otherwise</a></h3></div></li>
+      <li>
+        <h3><a href="#E" data-target="E">
+              <span class="sr-only">Branch 1 of 3: If </span>Do you like marmite <b>is</b> Love it<span class="sr-only">, go to Check your answers</span>
+          </a></h3>
+        <button>Add page</button>
+      </li>
+      <li>
+        <h3><a href="#E" data-target="E">
+            <span class="sr-only">Branch 2 of 3: If </span>Do you like marmite <b>is</b> Hate it<span class="sr-only">, go to Check your answers</span>
+
+          </a></h3>
+        <button>Add page</button>
+      </li>
+      <li>
+        <h3><a href="#H" data-target="H">
+          <span class="sr-only">Branch 3 of 3: If </span>Otherwise<span class="sr-only">, go to Your opinion is not strong enough</span>
+
+          </a></h3>
+        <button>Add page</button>
+        </li>
     </ul>
   </flow-item>
 
-  <flow-item id="H" data-next="E" data-prev="G">
+  <flow-item id="H" data-prev="G">
     <h2><a href="#" >
         <span class="sr-only">Edit: </span>Your opinion is not strong enough<span class="sr-only">, Exit page</span>
     </a></h2>
@@ -87,7 +104,7 @@
       <button>Add page</button>
   </flow-item>
 
-  <flow-item id="E" data-next="F" data-prev="H" type="Check your answers">
+  <flow-item id="E" data-next="F" data-prev="G" type="Check your answers">
       <h2><a href="#">
         <span class="sr-only">Edit page: </span>Check your answers<span class="sr-only">, Check your answers page</span>
         </a></h2>

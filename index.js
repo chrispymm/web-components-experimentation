@@ -6,39 +6,57 @@ class FlowGrid extends HTMLElement {
     const templateContent = template.content
     const shadowRoot = this.attachShadow({ mode: "open" });
 
-    this.navigating = true;
+    // this.navigating = true;
 
     shadowRoot.appendChild(templateContent.cloneNode(true));
     this.setAttribute('role', 'grid')
     this.setAttribute('tabindex', '0')
 
 
-    this.addEventListener('focusin', () => {
+    this.addEventListener('focusin', (e) => {
+      if (e.currentTarget.contains(e.relatedTarget)) {
+		/* Focus was already in the container */
+        console.log('focus from within grid')
+        this.navigating = true;
+	  } else {
+		/* Focus was received from outside the container */
+        this.navigating = true;
+        console.log('focus into grid')
+	  }
     });
 
-    this.addEventListener('focusout', () => {
-      this.removeInteractionFromItems();
-      this.focusedItem = undefined;
+    this.addEventListener('focusout', (e) => {
+      if (e.currentTarget.contains(e.relatedTarget)) {
+          /* Focus will still be within the container */
+      } else {
+          /* Focus will leave the container */
+        console.log('focus out of the grid')
+        this.removeInteractionFromItems();
+        this.focusedItem = undefined;
+      }
     })
 
     this.addEventListener('keydown', (e) => {
       switch (e.key) {
         case 'ArrowRight':
+          e.preventDefault();
           if(this.navigating) {
             this.next();
           }
           break;
         case 'ArrowLeft':
+          e.preventDefault();
           if( this.navigating) {
             this.previous();
           }
           break;
         case 'Enter':
-          if(this.navigating) {
+          console.log(this.navigating)
+          //if(this.navigating) {
             this.navigating = false;
             this.activeItem = this.focusedItem;
             this.focusedItem.makeInteractive();
-          }
+          //}
           break;
         case 'Escape':
           console.log(this.focusedItem)
@@ -121,6 +139,26 @@ class FlowItem extends HTMLElement {
     this.setAttribute('tabindex', '-1')
     this.makeInert();
 
+    this.addEventListener('focusin', (e) => {
+      if (e.currentTarget.contains(e.relatedTarget)) {
+		/* Focus was already in the container */
+	  } else {
+		/* Focus was received from outside the container */
+        console.log('focus into grid')
+	  }
+    })
+
+    this.addEventListener('focusout', (e) => {
+      if (e.currentTarget.contains(e.relatedTarget)) {
+          /* Focus will still be within the container */
+      } else {
+          /* Focus will leave the container */
+          console.log('focus out  of item');
+          this.makeInert();
+          this.currentFocusIndex = undefined;
+      }
+    })
+
     this.addEventListener('keydown', (e) => {
       let shiftKey = e.shiftKey;
       switch (e.key) {
@@ -136,12 +174,14 @@ class FlowItem extends HTMLElement {
           break;
         case 'ArrowRight':
         case 'ArrowDown':
+          e.preventDefault();
           if(this.isInteractive) {
             this.focusNext();
           }
           break;
         case 'ArrowLeft':
         case 'ArrowUp':
+          e.preventDefault();
           if(this.isInteractive) {
             this.focusPrev();
           }
@@ -150,7 +190,17 @@ class FlowItem extends HTMLElement {
           this.makeInert();
           this.isInteractive = false;
           this.currentFocusIndex = undefined;
-          // e.stopPropagation();
+          break;
+        case 'Enter':
+          if(this.isInteractive) {
+            e.stopPropagation();
+            console.log(e);
+            const nextItem = this.parentElement.querySelector('#'+e.target.dataset.target);
+            if(nextItem) {
+              e.preventDefault();
+              this.parentElement.focusItem(nextItem);
+            }
+          }
           break;
         default:
           break;
