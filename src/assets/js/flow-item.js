@@ -6,7 +6,31 @@ class FlowItem extends HTMLElement {
     const templateContent = template.content
     const shadowRoot = this.attachShadow({ mode: "open" });
 
+    const style = document.createElement('style')
+    style.textContent = `
+      :host {
+        --col-width: 240px;
+        --row-height: 200px;
+        position: absolute;
+        left: calc( var(--col-width) * ${this.column});
+        top: calc( var(--row-height) * ${this.row});
+      }
+
+      ::slotted(ul) {
+        position: absolute;
+        top: 0;
+        left: var(--col-width);
+        padding: 0;
+        margin: 0;
+      }
+
+      ::slotted(ul > li) {
+        background: blue;
+      }
+    `;
+
     shadowRoot.appendChild(templateContent.cloneNode(true));
+    shadowRoot.appendChild(style)
 
     this.currenFocusIndex;
 
@@ -94,6 +118,14 @@ class FlowItem extends HTMLElement {
 
   get variant() {
     return this.getAttribute('variant') || '';
+  }
+
+  get row() {
+    return this.dataset.row - 1;
+  }
+
+  get column() {
+    return this.dataset.col - 1;
   }
 
   get linkElement() {

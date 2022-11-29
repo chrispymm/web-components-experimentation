@@ -24,7 +24,6 @@
   </div>
 </template>
 
-</template>
 <template id="flow-item-template">
     <slot></slot>
 </template>
@@ -35,7 +34,7 @@
 <h1 id="page-title">Pages Flow</h1>
 
 <flow-grid aria-labelledby="page-title" aria-describedby="Use arrow keys to navigate the pages in your form">
-  <flow-item id="A" data-next="B" aria-label="this is the start page">
+  <flow-item id="A" data-next="B" aria-label="this is the start page" data-row="1" data-col="1">
     <h2><a href="#" >
         <span class="sr-only">Edit page: </span>Welcome<span class="sr-only">, Start page</span>
     </a></h2>
@@ -43,7 +42,7 @@
       <button>Add page</button>
   </flow-item>
 
-  <flow-item id="B" data-next="C" data-prev="A" type="Single question" variant="text">
+  <flow-item id="B" data-next="C" data-prev="A" type="Single question" variant="text" data-row="1" data-col="2">
     <h2><a href="#" >
         <span class="sr-only">Edit page: </span>Your name<span class="sr-only">, Email question page</span>
       </a></h2>
@@ -51,7 +50,7 @@
       <button>Add page</button>
   </flow-item>
 
-  <flow-item id="C" data-next="D" data-prev="B" type="Single question" variant="email">
+  <flow-item id="C" data-next="D" data-prev="B" type="Single question" variant="email" data-row="1" data-col="3">
     <h2><a href="#">
         <span class="sr-only">Edit page: </span>Your email<span class="sr-only">, Text question page</span>
       </a></h2>
@@ -59,7 +58,7 @@
       <button>Add page</button>
   </flow-item>
 
-  <flow-item id="D" data-next="G" data-prev="C" type="Multi question">
+  <flow-item id="D" data-next="G" data-prev="C" type="Multi question" data-row="1" data-col="4">
     <h2><a href="#" >
         <span class="sr-only">Edit page: </span>Address details<span class="sr-only">, Multi question page</span>
     </a></h2>
@@ -67,27 +66,27 @@
       <button>Add page</button>
   </flow-item>
 
-  <flow-item id="G" data-next="E" data-prev="D">
+  <flow-item id="G" data-next="E" data-prev="D" data-row="1" data-col="5">
     <h2><a href="#">
         <span class="sr-only">Edit: </span>Branching point 1<span class="sr-only">, 3 branches</span>
     </a></h2>
       <button>Page Actions</button>
 
-    <ul>
-      <li>
-        <h3><a href="#E" data-target="E">
+    <ul class="conditions">
+      <li data-row="1" data-col="6">
+        <h3><a href="#E" data-target="E" >
               <span class="sr-only">Branch 1 of 3: If </span>Do you like marmite <b>is</b> Love it<span class="sr-only">, go to Check your answers</span>
           </a></h3>
         <button>Add page</button>
       </li>
-      <li>
+      <li data-row="2" data-col="6">
         <h3><a href="#E" data-target="E">
             <span class="sr-only">Branch 2 of 3: If </span>Do you like marmite <b>is</b> Hate it<span class="sr-only">, go to Check your answers</span>
 
           </a></h3>
         <button>Add page</button>
       </li>
-      <li>
+      <li data-row="3" data-col="6">
         <h3><a href="#H" data-target="H">
           <span class="sr-only">Branch 3 of 3: If </span>Otherwise<span class="sr-only">, go to Your opinion is not strong enough</span>
 
@@ -97,7 +96,7 @@
     </ul>
   </flow-item>
 
-  <flow-item id="H" data-prev="G">
+  <flow-item id="H" data-prev="G" data-row="2" data-col="7">
     <h2><a href="#" >
         <span class="sr-only">Edit: </span>Your opinion is not strong enough<span class="sr-only">, Exit page</span>
     </a></h2>
@@ -105,7 +104,7 @@
       <button>Add page</button>
   </flow-item>
 
-  <flow-item id="E" data-next="F" data-prev="G" type="Check your answers">
+  <flow-item id="E" data-next="F" data-prev="G" type="Check your answers" data-row="1" data-col="7">
       <h2><a href="#">
         <span class="sr-only">Edit page: </span>Check your answers<span class="sr-only">, Check your answers page</span>
         </a></h2>
@@ -113,7 +112,7 @@
       <button>Add page</button>
   </flow-item>
 
-  <flow-item id="F" data-prev="E" type="Confirmation">
+  <flow-item id="F" data-prev="E" type="Confirmation" data-row="1" data-col="8">
     <h2><a href="#">
         <span class="sr-only">Edit page: </span>Application complete<span class="sr-only">, Confirmation page</span>
       </a></h2>

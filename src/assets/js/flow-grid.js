@@ -6,9 +6,19 @@ class FlowGrid extends HTMLElement {
     const templateContent = template.content
     const shadowRoot = this.attachShadow({ mode: "open" });
 
-    // this.navigating = true;
+    const style = document.createElement('style')
+    style.textContent = `
+      :host {
+        background: red;
+      }
+      [role="row"] {
+        position: relative;
+      }
+    `;
 
     shadowRoot.appendChild(templateContent.cloneNode(true));
+    shadowRoot.appendChild(style)
+
     this.setAttribute('role', 'grid')
     this.setAttribute('tabindex', '0')
 

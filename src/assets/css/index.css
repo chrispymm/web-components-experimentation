@@ -3,8 +3,9 @@ html {
 }
 
 flow-grid::part(row) {
-  display: flex;
-  gap: 3rem
+  /* display: flex; */
+  /* position:relative; */
+  /* gap: 3rem */
 }
 
 h2, h3 {
