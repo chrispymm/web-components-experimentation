@@ -1,12 +1,43 @@
-html {
-    background: #ccc;
+:root {
+  --item-width: 200px;
+  --item-height: 120px;
+  --gap-x: 50px;
+  --gap-y: 130px;
 }
 
-flow-grid::part(row) {
-  /* display: flex; */
-  /* position:relative; */
-  /* gap: 3rem */
+html {
+    /* background: #ccc; */
 }
+
+flow-grid.enhanced [role="row"] {
+  position: relative;
+  height: calc( (var(--item-height) + var(--gap-y))  * var(--rows));
+}
+
+flow-item.enhanced {
+  position: absolute;
+  width: var(--item-width);
+  height: var(--item-height);
+  left: calc( (var(--item-width) + var(--gap-x)) * var(--col-index));
+  top: calc( (var(--item-height) + var(--gap-y))  * var(--row-index));
+  border: 2px solid;
+  padding:  0.5rem;
+}
+
+flow-item.enhanced ul.conditions {
+  position: absolute;
+  left: calc( (var(--item-width) + var(--gap-x)));
+  top: 0;
+  list-style: none;
+}
+
+flow-item.enhanced ul.conditions li {
+  position: absolute;
+  width: var(--item-width);
+  left: 0;
+  top: calc( (var(--item-height) + var(--gap-y))  * var(--row-index));
+}
+
 
 h2, h3 {
   font-size: 1.1rem;

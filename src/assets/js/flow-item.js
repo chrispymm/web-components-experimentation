@@ -1,111 +1,27 @@
 class FlowItem extends HTMLElement {
   constructor() {
     super()
+  }
 
-    const template = document.querySelector('#flow-item-template');
-    const templateContent = template.content
-    const shadowRoot = this.attachShadow({ mode: "open" });
-
-    const style = document.createElement('style')
-    style.textContent = `
-      :host {
-        --col-width: 240px;
-        --row-height: 200px;
-        position: absolute;
-        left: calc( var(--col-width) * ${this.column});
-        top: calc( var(--row-height) * ${this.row});
-      }
-
-      ::slotted(ul) {
-        position: absolute;
-        top: 0;
-        left: var(--col-width);
-        padding: 0;
-        margin: 0;
-      }
-
-      ::slotted(ul > li) {
-        background: blue;
-      }
-    `;
-
-    shadowRoot.appendChild(templateContent.cloneNode(true));
-    shadowRoot.appendChild(style)
-
+  connectedCallback() {
     this.currenFocusIndex;
 
     this.setAttribute('role', 'gridcell')
     this.setAttribute('tabindex', '-1')
+    this.classList.add('enhanced')
+
     this.makeInert();
+    this.setPositions();
 
-    this.addEventListener('focusin', (e) => {
-      if (e.currentTarget.contains(e.relatedTarget)) {
-		/* Focus was already in the container */
-	  } else {
-		/* Focus was received from outside the container */
-        console.log('focus into grid')
-	  }
-    })
+    this.addEventListener('focusin', this.onFocusIn);
+    this.addEventListener('focusout', this.onFocusOut);
+    this.addEventListener('keydown', this.handleKeyDown);
+  }
 
-    this.addEventListener('focusout', (e) => {
-      if (e.currentTarget.contains(e.relatedTarget)) {
-          /* Focus will still be within the container */
-      } else {
-          /* Focus will leave the container */
-          console.log('focus out  of item');
-          this.makeInert();
-          this.currentFocusIndex = undefined;
-      }
-    })
-
-    this.addEventListener('keydown', (e) => {
-      let shiftKey = e.shiftKey;
-      switch (e.key) {
-        case 'Tab':
-          if(this.isInteractive){
-            e.preventDefault();
-            if(shiftKey) {
-              this.focusPrev();
-            } else {
-              this.focusNext();
-            }
-          }
-          break;
-        case 'ArrowRight':
-        case 'ArrowDown':
-          e.preventDefault();
-          if(this.isInteractive) {
-            this.focusNext();
-          }
-          break;
-        case 'ArrowLeft':
-        case 'ArrowUp':
-          e.preventDefault();
-          if(this.isInteractive) {
-            this.focusPrev();
-          }
-          break;
-        case 'Escape':
-          this.makeInert();
-          this.isInteractive = false;
-          this.currentFocusIndex = undefined;
-          break;
-        case 'Enter':
-          if(this.isInteractive) {
-            e.stopPropagation();
-            console.log(e);
-            const nextItem = this.parentElement.querySelector('#'+e.target.dataset.target);
-            if(nextItem) {
-              e.preventDefault();
-              this.parentElement.focusItem(nextItem);
-            }
-          }
-          break;
-        default:
-          break;
-      }
-    });
-
+  disconnectedCallback() {
+    this.removeEventListener('focusin', this.onFocusIn);
+    this.removeEventListener('focusout', this.onFocusOut);
+    this.removeEventListener('keydown', this.handleKeyDown);
   }
 
   get interactiveElements() {
@@ -130,6 +46,19 @@ class FlowItem extends HTMLElement {
 
   get linkElement() {
     return this.querySelector('a');
+  }
+
+  setPositions() {
+    this.style.setProperty("--col-index", this.column);
+    this.style.setProperty("--row-index", this.row);
+    if(this.type == 'Branching point') {
+      let conditions = this.querySelectorAll('ul.conditions > li');
+      console.log(conditions);
+      conditions.forEach( (condition) => {
+        console.log(condition.dataset.row);
+        condition.style.setProperty("--row-index", condition.dataset.row - 1)
+      })
+    }
   }
 
   makeInert() {
@@ -166,6 +95,75 @@ class FlowItem extends HTMLElement {
     }
     this.interactiveElements.item(index).focus();
     this.currentFocusIndex = index;
+  }
+
+  onFocusIn(event) {
+    if (event.currentTarget.contains(event.relatedTarget)) {
+      /* Focus was already in the container */
+    } else {
+      /* Focus was received from outside the container */
+      console.log('focus into grid')
+    }
+  }
+
+  onfocusOut(event) {
+    if (event.currentTarget.contains(event.relatedTarget)) {
+      /* Focus will still be within the container */
+    } else {
+      /* Focus will leave the container */
+      console.log('focus out  of item');
+      this.makeInert();
+      this.currentFocusIndex = undefined;
+    }
+  }
+
+  handleKeyDown(event) {
+    let shiftKey = event.shiftKey;
+    switch (event.key) {
+      case 'Tab':
+        if(this.isInteractive){
+          event.preventDefault();
+          if(shiftKey) {
+            this.focusPrev();
+          } else {
+            this.focusNext();
+          }
+        }
+        break;
+      case 'ArrowRight':
+      case 'ArrowDown':
+        event.preventDefault();
+        if(this.isInteractive) {
+          this.focusNext();
+        }
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        event.preventDefault();
+        if(this.isInteractive) {
+          this.focusPrev();
+        }
+        break;
+      case 'Escape':
+        this.makeInert();
+        this.isInteractive = false;
+        this.currentFocusIndex = undefined;
+        break;
+      case 'Enter':
+        if(this.isInteractive) {
+          event.stopPropagation();
+          console.log(event);
+          const grid = this.closest('flow-grid');
+          const nextItem = grid.querySelector('#'+event.target.dataset.target);
+          if(nextItem) {
+            event.preventDefault();
+            grid.focusItem(nextItem);
+          }
+        }
+        break;
+      default:
+        break;
+    }
   }
 
 }

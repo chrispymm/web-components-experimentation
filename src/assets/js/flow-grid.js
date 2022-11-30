@@ -1,92 +1,52 @@
 class FlowGrid extends HTMLElement {
   constructor() {
     super()
-
-    const template = document.querySelector('#flow-grid-template');
-    const templateContent = template.content
-    const shadowRoot = this.attachShadow({ mode: "open" });
-
-    const style = document.createElement('style')
-    style.textContent = `
-      :host {
-        background: red;
-      }
-      [role="row"] {
-        position: relative;
-      }
-    `;
-
-    shadowRoot.appendChild(templateContent.cloneNode(true));
-    shadowRoot.appendChild(style)
-
-    this.setAttribute('role', 'grid')
-    this.setAttribute('tabindex', '0')
-
-
-    this.addEventListener('focusin', (e) => {
-      if (e.currentTarget.contains(e.relatedTarget)) {
-		/* Focus was already in the container */
-        console.log('focus from within grid')
-        this.navigating = true;
-	  } else {
-		/* Focus was received from outside the container */
-        this.navigating = true;
-        console.log('focus into grid')
-	  }
-    });
-
-    this.addEventListener('focusout', (e) => {
-      if (e.currentTarget.contains(e.relatedTarget)) {
-          /* Focus will still be within the container */
-      } else {
-          /* Focus will leave the container */
-        console.log('focus out of the grid')
-        this.removeInteractionFromItems();
-        this.focusedItem = undefined;
-      }
-    })
-
-    this.addEventListener('keydown', (e) => {
-      switch (e.key) {
-        case 'ArrowRight':
-          e.preventDefault();
-          if(this.navigating) {
-            this.next();
-          }
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          if( this.navigating) {
-            this.previous();
-          }
-          break;
-        case 'Enter':
-          console.log(this.navigating)
-          //if(this.navigating) {
-            this.navigating = false;
-            this.activeItem = this.focusedItem;
-            this.focusedItem.makeInteractive();
-          //}
-          break;
-        case 'Escape':
-          console.log(this.focusedItem)
-          if(!this.navigating) {
-            this.navigating = true;
-          }
-          this.focusItem(this.activeItem);
-          this.activeItem = undefined;
-        default:
-          break;
-      }
-    });
-
   }
 
   connectedCallback() {
+    this.setAttribute('role', 'grid')
+    this.setAttribute('tabindex', '0')
+    this.classList.add('enhanced')
+
+    this.createGridRow();
+    this.setHeight();
+
+    this.addEventListener('focusin', this.onFocusIn);
+    this.addEventListener('focusout', this.onFocusOut);
+    this.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener('focusin', this.onFocusIn);
+    this.removeEventListener('focusout', this.onFocusOut);
+    this.removeEventListener('keydown', this.handleKeyDown);
   }
 
   get items() {
-      return this.querySelectorAll('[role="gridcell"]');
+    return this.querySelectorAll('[role="gridcell"]');
+  }
+
+  createGridRow() {
+    const row = document.createElement('div');
+    row.setAttribute('role', 'row');
+
+    const elements = Array.from(this.childNodes);
+    if (elements && elements.length) {
+      elements[0].parentNode.insertBefore(row, elements[0]);
+      for (var i in elements) {
+        row.appendChild(elements[i]);
+      }
+    }
+  }
+
+  setHeight() {
+    const rows = Array.from( this.querySelectorAll('[data-row]'));
+    let maxRow = rows.reduce((maxRow, row) => {
+      let value = row.dataset.row;
+      let number = value.substring(value.length-1);
+      return Math.max(maxRow, number);
+    }, 0)
+    this.style.setProperty('--rows', maxRow)
   }
 
   next() {
@@ -130,5 +90,61 @@ class FlowGrid extends HTMLElement {
       })
   }
 
+  onFocusIn(event) {
+    if (event.currentTarget.contains(event.relatedTarget)) {
+      /* Focus was already in the container */
+      console.log('focus from within grid')
+      this.navigating = true;
+    } else {
+      /* Focus was received from outside the container */
+      this.navigating = true;
+      console.log('focus into grid')
+    }
+  }
+
+  onFocusOut(event){
+    if (event.currentTarget.contains(event.relatedTarget)) {
+        /* Focus will still be within the container */
+    } else {
+        /* Focus will leave the container */
+      console.log('focus out of the grid')
+      this.removeInteractionFromItems();
+      this.focusedItem = undefined;
+    }
+  }
+
+  handleKeyDown(event) {
+    switch (event.key) {
+        case 'ArrowRight':
+          event.preventDefault();
+          if(this.navigating) {
+            this.next();
+          }
+          break;
+        case 'ArrowLeft':
+          event.preventDefault();
+          if( this.navigating) {
+            this.previous();
+          }
+          break;
+        case 'Enter':
+          console.log(this.navigating)
+          //if(this.navigating) {
+            this.navigating = false;
+            this.activeItem = this.focusedItem;
+            this.focusedItem.makeInteractive();
+          //}
+          break;
+        case 'Escape':
+          console.log(this.focusedItem)
+          if(!this.navigating) {
+            this.navigating = true;
+          }
+          this.focusItem(this.activeItem);
+          this.activeItem = undefined;
+        default:
+          break;
+      }
+  }
 }
 customElements.define('flow-grid', FlowGrid)

@@ -51,7 +51,7 @@
   </flow-item>
 
   <flow-item id="C" data-next="D" data-prev="B" type="Single question" variant="email" data-row="1" data-col="3">
-    <h2><a href="#">
+      <h2><a href="#">
         <span class="sr-only">Edit page: </span>Your email<span class="sr-only">, Text question page</span>
       </a></h2>
       <button>Page Actions</button>
@@ -60,13 +60,13 @@
 
   <flow-item id="D" data-next="G" data-prev="C" type="Multi question" data-row="1" data-col="4">
     <h2><a href="#" >
-        <span class="sr-only">Edit page: </span>Address details<span class="sr-only">, Multi question page</span>
+        <span class="sr-only">Edit page: </span>Toast topping preferences<span class="sr-only">, Multi question page</span>
     </a></h2>
       <button>Page Actions</button>
       <button>Add page</button>
   </flow-item>
 
-  <flow-item id="G" data-next="E" data-prev="D" data-row="1" data-col="5">
+  <flow-item id="G" data-next="E" data-prev="D" type="Branching point" data-row="1" data-col="5" >
     <h2><a href="#">
         <span class="sr-only">Edit: </span>Branching point 1<span class="sr-only">, 3 branches</span>
     </a></h2>
@@ -96,7 +96,7 @@
     </ul>
   </flow-item>
 
-  <flow-item id="H" data-prev="G" data-row="2" data-col="7">
+  <flow-item id="H" data-prev="G" data-row="3" data-col="7">
     <h2><a href="#" >
         <span class="sr-only">Edit: </span>Your opinion is not strong enough<span class="sr-only">, Exit page</span>
     </a></h2>
