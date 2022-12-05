@@ -108,11 +108,12 @@ class FlowItem extends HTMLElement {
     }
   }
 
-  onfocusOut(event) {
+  onFocusOut(event) {
     if (event.currentTarget.contains(event.relatedTarget)) {
       /* Focus will still be within the container */
     } else {
       /* Focus will leave the container */
+      this.classList.remove('active');
       this.makeInert();
       this.currentFocusIndex = undefined;
     }
