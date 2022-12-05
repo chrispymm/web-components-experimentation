@@ -7,9 +7,10 @@
 
 html {
     /* background: #ccc; */
+  padding: 2rem;
 }
 
-flow-grid.enhanced [role="row"] {
+flow-grid.enhanced > [role="row"] {
   position: relative;
   height: calc( (var(--item-height) + var(--gap-y))  * var(--rows));
 }
@@ -24,19 +25,43 @@ flow-item.enhanced {
   padding:  0.5rem;
 }
 
-flow-item.enhanced ul.conditions {
+flow-item.enhanced ul.conditions,
+flow-item.enhanced branch-conditions {
   position: absolute;
   left: calc( (var(--item-width) + var(--gap-x)));
   top: 0;
+  width: var(--item-width);
   list-style: none;
 }
 
-flow-item.enhanced ul.conditions li {
+flow-item.enhanced ul.conditions li,
+flow-item.enhanced branch-conditions branch-condition {
   position: absolute;
   width: var(--item-width);
   left: 0;
   top: calc( (var(--item-height) + var(--gap-y))  * var(--row-index));
 }
+
+flow-grid.enhanced branch-conditions [role="row"] {
+  position: relative;
+  height: calc( var(--item-height) + var(--gap-y));
+}
+
+flow-item:focus-visible {
+  outline: 3px solid yellow;
+}
+
+flow-item.active {
+  outline: 3px solid red;
+}
+
+branch-condition:focus-visible {
+  outline: 3px solid yellow;
+}
+branch-condition.active {
+  outline: 3px solid red;
+}
+
 
 
 h2, h3 {

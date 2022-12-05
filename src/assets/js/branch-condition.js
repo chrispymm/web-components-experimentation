@@ -1,15 +1,14 @@
-class FlowItem extends HTMLElement {
+class BranchCondition extends HTMLElement {
+
   constructor() {
-    super()
+    super();
   }
 
   connectedCallback() {
-    this.setAttribute('role', 'gridcell')
-    this.setAttribute('tabindex', '-1')
-    this.classList.add('enhanced')
+    this.setAttribute('role', 'gridcell');
 
+    this.createGridRow();
     this.makeInert();
-    this.setPositions();
 
     this.addEventListener('focusin', this.onFocusIn);
     this.addEventListener('focusout', this.onFocusOut);
@@ -23,41 +22,20 @@ class FlowItem extends HTMLElement {
   }
 
   get interactiveElements() {
-    return this.querySelectorAll(':scope > h2 a, :scope > button, :scope > [role="grid"], :scope ul.conditions a, :scope ul.conditions button');
-  }
-
-  get type() {
-    return this.getAttribute('type');
-  }
-
-  get variant() {
-    return this.getAttribute('variant') || '';
+    return this.querySelectorAll(':scope > h3 a, :scope > button');
   }
 
   get grid() {
     return this.closest('flow-grid');
   }
 
-  get row() {
-    return this.dataset.row - 1;
-  }
+  createGridRow() {
+    if(this.parentNode.getAttribute('role') !== 'row') {
+    const row = document.createElement('div');
+    row.setAttribute('role', 'row');
 
-  get column() {
-    return this.dataset.col - 1;
-  }
-
-  get linkElement() {
-    return this.querySelector('a');
-  }
-
-  setPositions() {
-    this.style.setProperty("--col-index", this.column);
-    this.style.setProperty("--row-index", this.row);
-    if(this.type == 'Branching point') {
-      let conditions = this.querySelectorAll('ul.conditions > li');
-      conditions.forEach( (condition) => {
-        condition.style.setProperty("--row-index", condition.dataset.row - 1)
-      })
+    this.parentNode.insertBefore(row, this);
+    row.appendChild(this);
     }
   }
 
@@ -73,7 +51,7 @@ class FlowItem extends HTMLElement {
     this.classList.add('active');
     this.interactiveElements.forEach((item) => {
       item.setAttribute('tabindex', '0');
-      item.removeAttribute('aria-hidden')
+      item.removeAttribute('aria-disabled')
     });
     this.isInteractive = true;
     this.focusNext();
@@ -108,12 +86,14 @@ class FlowItem extends HTMLElement {
     }
   }
 
-  onfocusOut(event) {
+  onFocusOut(event) {
     if (event.currentTarget.contains(event.relatedTarget)) {
       /* Focus will still be within the container */
+      console.log('condition: focusout')
     } else {
       /* Focus will leave the container */
       this.makeInert();
+      this.isInteractive = false;
       this.currentFocusIndex = undefined;
     }
   }
@@ -135,6 +115,7 @@ class FlowItem extends HTMLElement {
       case 'ArrowDown':
         event.preventDefault();
         if(this.isInteractive) {
+          event.stopPropagation();
           this.focusNext();
         }
         break;
@@ -142,15 +123,15 @@ class FlowItem extends HTMLElement {
       case 'ArrowUp':
         event.preventDefault();
         if(this.isInteractive) {
+          event.stopPropagation();
           this.focusPrev();
         }
         break;
       case 'Escape':
-        this.makeInert();
-        this.isInteractive = false;
-        this.currentFocusIndex = undefined;
+        // Handled by focusOut
         break;
       case 'Enter':
+        event.preventDefault();
         if(this.isInteractive) {
           event.stopPropagation();
           const nextItem = this.grid.querySelector('#'+event.target.dataset.target);
@@ -164,6 +145,5 @@ class FlowItem extends HTMLElement {
         break;
     }
   }
-
 }
-customElements.define('flow-item', FlowItem)
+customElements.define('branch-condition', BranchCondition);

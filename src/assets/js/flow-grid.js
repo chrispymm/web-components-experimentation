@@ -6,7 +6,7 @@ class FlowGrid extends HTMLElement {
   connectedCallback() {
     this.setAttribute('role', 'grid')
     this.setAttribute('tabindex', '0')
-    this.classList.add('enhanced')
+    this.classList.add('enhanced');
 
     this.createGridRow();
     this.setHeight();
@@ -81,6 +81,7 @@ class FlowGrid extends HTMLElement {
      this.removeInteractionFromItems();
       item.setAttribute('tabindex', '0');
       item.focus();
+    item.classList.add('focused');
       this.focusedItem = item;
   }
 
@@ -93,12 +94,10 @@ class FlowGrid extends HTMLElement {
   onFocusIn(event) {
     if (event.currentTarget.contains(event.relatedTarget)) {
       /* Focus was already in the container */
-      console.log('focus from within grid')
       this.navigating = true;
     } else {
       /* Focus was received from outside the container */
       this.navigating = true;
-      console.log('focus into grid')
     }
   }
 
@@ -107,7 +106,6 @@ class FlowGrid extends HTMLElement {
         /* Focus will still be within the container */
     } else {
         /* Focus will leave the container */
-      console.log('focus out of the grid')
       this.removeInteractionFromItems();
       this.focusedItem = undefined;
     }
@@ -128,19 +126,19 @@ class FlowGrid extends HTMLElement {
           }
           break;
         case 'Enter':
-          console.log(this.navigating)
-          //if(this.navigating) {
+          if(this.focusedItem) {
             this.navigating = false;
             this.activeItem = this.focusedItem;
             this.focusedItem.makeInteractive();
-          //}
+          }
           break;
         case 'Escape':
-          console.log(this.focusedItem)
           if(!this.navigating) {
             this.navigating = true;
           }
-          this.focusItem(this.activeItem);
+          if(this.activeItem) {
+            this.focusItem(this.activeItem);
+          }
           this.activeItem = undefined;
         default:
           break;

@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Accessible Flow View - List Branch Conditions</title>
+  <title>Accessible Flow Vew - Nested Grid Branch Conditions</title>
 
   <script type="module">
     document.documentElement.classList.remove('no-js');
@@ -15,6 +16,8 @@
 
   <script src="/assets/js/flow-grid.js" type="module"></script>
   <script src="/assets/js/flow-item.js" type="module"></script>
+  <script src="/assets/js/branch-condition.js" type="module"></script>
+  <script src="/assets/js/branch-conditions.js" type="module"></script>
 </head>
 
 <body>
@@ -33,8 +36,8 @@
 
 <h1 id="page-title">Pages Flow</h1>
 
-<flow-grid aria-labelledby="page-title" aria-description="Use left and right arrow keys to navigate the pages in your form">
-  <flow-item id="A" data-next="B" aria-label="Welcome" data-row="1" data-col="1">
+<flow-grid aria-labelledby="page-title" aria-describedby="Use arrow keys to navigate the pages in your form">
+  <flow-item id="A" data-next="B" aria-label="this is the start page" data-row="1" data-col="1">
     <h2><a href="#" >
         <span class="sr-only">Edit page: </span>Welcome<span class="sr-only">, Start page</span>
     </a></h2>
@@ -42,12 +45,12 @@
       <button>Add page</button>
   </flow-item>
 
-  <flow-item id="B" data-next="C" data-prev="A" type="Single question" variant="text" data-row="1" data-col="2" aria-labelledby="B-title">
-    <h2 id="B-title"><a href="#" >
+  <flow-item id="B" data-next="C" data-prev="A" type="Single question" variant="text" data-row="1" data-col="2">
+    <h2><a href="#" >
         <span class="sr-only">Edit page: </span>Your name<span class="sr-only">, Email question page</span>
       </a></h2>
-      <button aria-hidden="true">Page Actions</button>
-      <button aria-hidden="true">Add page</button>
+      <button>Page Actions</button>
+      <button>Add page</button>
   </flow-item>
 
   <flow-item id="C" data-next="D" data-prev="B" type="Single question" variant="email" data-row="1" data-col="3">
@@ -72,28 +75,28 @@
     </a></h2>
       <button>Page Actions</button>
 
-    <ul class="conditions">
-      <li data-row="1" data-col="6">
+    <branch-conditions aria-label="Branches">
+      <branch-condition data-row="1" data-col="6" role="row">
         <h3><a href="#E" data-target="E" >
               <span class="sr-only">Branch 1 of 3: If </span>Do you like marmite <b>is</b> Love it<span class="sr-only">, go to Check your answers</span>
           </a></h3>
         <button>Add page</button>
-      </li>
-      <li data-row="2" data-col="6">
+      </branch-condition>
+      <branch-condition data-row="2" data-col="6" role="row">
         <h3><a href="#E" data-target="E">
             <span class="sr-only">Branch 2 of 3: If </span>Do you like marmite <b>is</b> Hate it<span class="sr-only">, go to Check your answers</span>
 
           </a></h3>
         <button>Add page</button>
-      </li>
-      <li data-row="3" data-col="6">
+      </branch-condition>
+      <branch-condition data-row="3" data-col="6" role="row">
         <h3><a href="#H" data-target="H">
           <span class="sr-only">Branch 3 of 3: If </span>Otherwise<span class="sr-only">, go to Your opinion is not strong enough</span>
 
           </a></h3>
         <button>Add page</button>
-        </li>
-    </ul>
+        </branch-condition>
+    </branch-conditions>
   </flow-item>
 
   <flow-item id="H" data-prev="G" data-row="3" data-col="7">
