@@ -1,3 +1,5 @@
+import getFocusableElements from './utils/get-focusable-elements.js';
+
 class FlowItem extends HTMLElement {
   constructor() {
     super()
@@ -23,7 +25,8 @@ class FlowItem extends HTMLElement {
   }
 
   get interactiveElements() {
-    return this.querySelectorAll(':scope > h2 a, :scope > button, :scope > [role="grid"], :scope ul.conditions a, :scope ul.conditions button');
+    //return getFocusableElements(this);
+    return this.querySelectorAll(':scope > h2 a, :scope button, :scope > [role="grid"], :scope ul.conditions a, :scope ul.conditions button');
   }
 
   get type() {
@@ -167,4 +170,8 @@ class FlowItem extends HTMLElement {
   }
 
 }
-customElements.define('flow-item', FlowItem)
+
+if ('customElements' in window) {
+  customElements.define('flow-item', FlowItem)
+}
+export default FlowItem;

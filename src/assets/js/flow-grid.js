@@ -87,6 +87,7 @@ class FlowGrid extends HTMLElement {
 
   removeInteractionFromItems() {
       this.items.forEach((item) => {
+        item.makeInert();
         item.setAttribute('tabindex', '-1');
       })
   }
