@@ -2,7 +2,6 @@ import getFocusableElements from './utils/get-focusable-elements.js';
 import { tabbable } from 'tabbable';
 
 class ActivatedMenu extends HTMLElement {
-  #currentFocusIndex;
 
   constructor() {
     super();
@@ -11,7 +10,7 @@ class ActivatedMenu extends HTMLElement {
 
     this.state = new Proxy(
       {
-        status: 'open',
+        status: 'closed',
       },
       {
         set(state, key, value) {
@@ -26,11 +25,12 @@ class ActivatedMenu extends HTMLElement {
       }
     );
 
-    this.#currentFocusIndex = 0;
+    this.currentFocusIndex = 0;
   }
 
   connectedCallback() {
     this.initialMarkup = this.innerHTML;
+    this.menuItemsMarkup = this.querySelector('[data-element="activated-menu-items"]').outerHTML;
     this.render();
   }
 
@@ -38,8 +38,8 @@ class ActivatedMenu extends HTMLElement {
 
   }
 
-  get buttonLabel() {
-    return this.getAttribute('button-label');
+  get triggerLabel() {
+    return this.getAttribute('trigger-label');
   }
 
   get items() {
@@ -50,10 +50,10 @@ class ActivatedMenu extends HTMLElement {
     this.innerHTML = `
       <div class="activated-menu" data-element="activated-menu-root">
         <button class="activated-menu__trigger" data-element="activated-menu-trigger" type="button" aria-haspopup="menu">
-          <span>${this.buttonLabel}</span>
+          <span>${this.triggerLabel}</span>
         </button>
         <div class="activated-menu__panel" data-element="activated-menu-panel">
-          ${this.initialMarkup}
+          ${this.menuItemsMarkup}
         </div>
       </div>
     `
@@ -65,11 +65,13 @@ class ActivatedMenu extends HTMLElement {
     this.trigger = this.querySelector('[data-element="activated-menu-trigger"]');
     this.panel = this.querySelector('[data-element="activated-menu-panel"]');
     this.root = this.querySelector('[data-element="activated-menu-root"]');
+    this.menu = this.querySelector('[data-element="activated-menu-items"]');
+    this.menuItems = this.menu.querySelectorAll(':scope > li');
     this.focusableElements = getFocusableElements(this);
 
     if (this.trigger && this.panel) {
       this.panel.querySelector('ul').setAttribute('role', 'menu')
-      this.panel.querySelectorAll('a').forEach( item => item.setAttribute('role', 'menuitem'));
+      this.menuItems.forEach( item => item.setAttribute('role', 'menuitem'));
 
       this.toggle();
 
@@ -79,7 +81,7 @@ class ActivatedMenu extends HTMLElement {
         this.toggle();
       });
 
-      this.addEventListener('keydown', event => {
+      this.root.addEventListener('keydown', event => {
         if(this.state.status === 'open') {
           event.stopPropagation();
           let key = event.key;
@@ -175,35 +177,35 @@ class ActivatedMenu extends HTMLElement {
   }
 
   focusItem(index=0) {
-    if(index > this.items.length - 1) index = 0;
-    if(index < 0 ) index = this.items.length - 1;
+    if(index > this.menuItems.length - 1) index = 0;
+    if(index < 0 ) index = this.menuItems.length - 1;
 
-    const item = this.items.item(index).querySelector('a:first-child');
+    const item = this.menuItems.item(index).querySelector('a:first-child');
 
     if(item.hasAttribute('aria-disabled')) {
       // if item is disabled, skip it
-      if( index > this.#currentFocusIndex) {
+      if( index > this.currentFocusIndex) {
         this.focus(index+1);
       } else {
         this.focus(index-1);
       }
     } else {
-      this.#currentFocusIndex = index;
+      this.currentFocusIndex = index;
       item.focus();
       //this.$node.attr('aria-activedescendant', $item.attr('id'));
     }
   }
 
   focusNext() {
-    this.focusItem( this.#currentFocusIndex + 1 );
+    this.focusItem( this.currentFocusIndex + 1 );
   }
 
   focusPrev() {
-    this.focusItem( this.#currentFocusIndex - 1 );
+    this.focusItem( this.currentFocusIndex - 1 );
   }
 
   focusLast() {
-    this.focusItem( this.items.length - 1);
+    this.focusItem( this.menuItems.length - 1);
   }
 }
 

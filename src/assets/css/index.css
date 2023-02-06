@@ -52,9 +52,12 @@ flow-item ul.conditions li {
   gap: 1rem;
 }
 
+flow-grid.enhanced {
+  max-width: none;
+}
+
 flow-grid.enhanced > [role="row"] {
   position: relative;
-  max-width: none;
   height: calc( (var(--item-height) + var(--gap-y))  * var(--rows));
 }
 
@@ -145,6 +148,7 @@ activated-menu ul {
 }
 
 .activated-menu ul {
+  display: block;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -161,10 +165,15 @@ activated-menu ul {
 
 .activated-menu[status="open"] .activated-menu__panel {
   display: block;
+  z-index: 20;
 }
 
 
 
 
+
+[hidden] {
+  display: none;
+}
 
 

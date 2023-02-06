@@ -21,9 +21,9 @@
 
   <link rel="stylesheet" href="/assets/css/index.css">
 
+  <script src="/assets/js/activated-menu.js" type="module"></script>
   <script src="/assets/js/flow-grid.js" type="module"></script>
   <script src="/assets/js/flow-item.js" type="module"></script>
-  <script src="/assets/js/activated-menu.js" type="module"></script>
 </head>
 
 <body>
@@ -64,22 +64,45 @@
         <span class="sr-only">Edit page: </span>Your email<span class="sr-only">, Text question page</span>
       </a></h2>
       <button aria-hidden="true">Page Actions</button>
-      <button aria-hidden="true">Add page</button>
+
+      <activated-menu trigger-label="Add Page">
+        <a href="#">Add Page</a>
+        <ul data-element="activated-menu-items" hidden>
+          <li><a href="#">Add single question page</a></li>
+          <li><a href="#">Add Multi question page</a></li>
+          <li><a href="#">Add content page</a></li>
+          <li><a href="#">Add exit page</a></li>
+          <li><a href="#">Add branching</a></li>
+          <li><a href="#">Change next page</a></li>
+        </ul>
+      </activated-menu>
   </flow-item>
 
   <flow-item id="D" data-next="G" data-prev="C" type="Multi question" data-row="1" data-col="4">
     <h2><a href="#" >
         <span class="sr-only">Edit page: </span>Toast topping preferences<span class="sr-only">, Multi question page</span>
     </a></h2>
-      <activated-menu button-label="Page Actions">
-        <ul>
+
+      <activated-menu trigger-label="Page Actions">
+        <ul data-element="activated-menu-items">
           <li><a href="#">Edit page</a></li>
           <li><a href="#">Preview page</a></li>
           <li><a href="#">Move page...</a></li>
           <li><a href="#">Delete page...</a></li>
         </ul>
       </activated-menu>
-      <button>Add page</button>
+
+      <activated-menu trigger-label="Add Page">
+        <a href="#">Add Page</a>
+        <ul data-element="activated-menu-items" hidden>
+          <li><a href="#">Add single question page</a></li>
+          <li><a href="#">Add Multi question page</a></li>
+          <li><a href="#">Add content page</a></li>
+          <li><a href="#">Add exit page</a></li>
+          <li><a href="#">Add branching</a></li>
+          <li><a href="#">Change next page</a></li>
+        </ul>
+      </activated-menu>
   </flow-item>
 
   <flow-item id="G" data-next="E" data-prev="D" type="Branching point" data-row="1" data-col="5" >
