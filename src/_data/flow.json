@@ -1,0 +1,88 @@
+{
+  "A": {
+    "id": "A",
+    "next": "B",
+    "title": "Start here",
+    "type": "Start page",
+    "component": "flow-item"
+  },
+  "B": {
+    "id": "B",
+    "next": "C",
+    "prev": "A",
+    "title": "Your name",
+    "type": "Single question",
+    "variant": "text",
+    "component": "flow-item"
+  },
+  "C": {
+    "id": "C",
+    "next": "D",
+    "prev": "B",
+    "title": "Your email",
+    "type": "Single question",
+    "variant": "email",
+    "component": "flow-item"
+  },
+  "D": {
+    "id": "D",
+    "next": "G",
+    "prev": "C",
+    "title": "Toast topping preferences",
+    "type": "Multi question",
+    "component": "flow-item"
+  },
+  "G": {
+    "id": "G",
+    "next": "E",
+    "prev": "D",
+    "title": "Branching point 1",
+    "type": "Branching point",
+    "component": "branching-point",
+    "conditions": [
+      {
+        "question": "Do you like marmite?",
+        "operator": "is",
+        "value": "Love it",
+        "target_id": "E",
+        "target_title": "Check your answers"
+      },
+      {
+        "question": "Do you like marmite?",
+        "operator": "is",
+        "value": "Hate it",
+        "target_id": "E",
+        "target_title": "Check your answers"
+      },
+      {
+        "target_id": "H",
+        "target_title": "Your opinion is not strong enough"
+      }
+    ]
+  },
+  "E": {
+    "id": "E",
+    "next": "F",
+    "prev": "G",
+    "title": "Check your answers",
+    "type": "checkanswers",
+    "component": "flow-item"
+  },
+  "F": {
+    "id": "F",
+    "prev": "E",
+    "title": "Application complete",
+    "type": "Confirmation",
+    "component": "flow-item"
+  },
+  "H": {
+    "id": "H",
+    "prev": "G",
+    "title": "Your opinion is not strong enough",
+    "row": 3,
+    "col": 7,
+    "type": "Exit",
+    "component": "flow-item"
+  }
+
+}

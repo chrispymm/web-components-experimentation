@@ -48,121 +48,31 @@
 <h1 id="page-title">Pages Flow</h1>
 
 <flow-grid aria-labelledby="page-title" aria-description="Use left and right arrow keys to navigate the pages in your form">
+  {% set col = 1 %}
 
-  {{ component('flow-item', {
-    id: 'A',
-    next: 'B',
-    row: 1,
-    col: 1,
-    title: 'Start here',
-    type: 'Start page',
-    page_menu_items: pageMenuItems,
-    connection_menu_items: connectionMenuItems
-  }) }}
+  {% for id, item in flow %}
+    {{ component( item.component, {
+      id: id,
+      next: item.next,
+      prev: item.prev,
+      row: item.row if item.row else 1,
+      col: item.col if item.col else col,
+      title: item.title,
+      type: item.type,
+      variant: item.variant,
+      conditions: item.conditions,
+      page_menu_items: pageMenuItems,
+      connection_menu_items: connectionMenuItems
+    }) }}
 
-  {{ component('flow-item', {
-    id: 'B',
-    next: 'C',
-    prev: 'A',
-    row: 1,
-    col: 2,
-    title: 'Your name',
-    type: 'Single question',
-    variant: 'text',
-    page_menu_items: pageMenuItems,
-    connection_menu_items: connectionMenuItems
-  }) }}
+    {% set col = col + 1 %}
 
-  {{ component('flow-item', {
-    id: 'C',
-    next: 'D',
-    prev: 'B',
-    row: 1,
-    col: 3,
-    title: 'Your email',
-    type: 'Single question',
-    variant: 'email',
-    page_menu_items: pageMenuItems,
-    connection_menu_items: connectionMenuItems
-  }) }}
+    {% if item.component == 'branching-point' %}
+      {% set col = col + 1 %}
+    {% endif %}
 
-  {{ component('flow-item', {
-    id: 'D',
-    next: 'G',
-    prev: 'C',
-    row: 1,
-    col: 4,
-    title: 'Toast topping preferences',
-    type: 'Multi question',
-    page_menu_items: pageMenuItems,
-    connection_menu_items: connectionMenuItems
-  }) }}
+  {% endfor %}
 
-  {{ component('branching-point', {
-    id: 'G',
-    next: 'E',
-    prev: 'D',
-    row: 1,
-    col: 5,
-    title: 'Branching point 1',
-    type: 'Branching point',
-    page_menu_items: pageMenuItems,
-    connection_menu_items: connectionMenuItems,
-    conditions: [
-      {
-        question: 'Do you like marmite?',
-        operator: 'is',
-        value: 'Love it',
-        target_id: 'E',
-        target_title: 'Check your answers'
-      },
-      {
-        question: 'Do you like marmite?',
-        operator: 'is',
-        value: 'Hate it',
-        target_id: 'E',
-        target_title: 'Check your answers'
-      },
-      {
-        target_id: 'E',
-        target_title: 'Check your answers'
-      }
-    ]
-  }) }}
-
-  {{ component('flow-item', {
-    id: 'H',
-    prev: 'G',
-    row: 3,
-    col: 7,
-    title: 'Your opinion is not strong enough',
-    type: 'Exit',
-    page_menu_items: pageMenuItems,
-    connection_menu_items: connectionMenuItems
-  }) }}
-
-  {{ component('flow-item', {
-    id: 'E',
-    next: 'F',
-    prev: 'G',
-    row: 1,
-    col: 7,
-    title: 'Check your answers',
-    type: 'Checkanswers',
-    page_menu_items: pageMenuItems,
-    connection_menu_items: connectionMenuItems
-  }) }}
-
-  {{ component('flow-item', {
-    id: 'F',
-    prev: 'E',
-    row: 1,
-    col: 8,
-    title: 'Application Complete',
-    type: 'Confirmation',
-    page_menu_items: pageMenuItems,
-    connection_menu_items: connectionMenuItems
-  }) }}
 </flow-grid>
 
 <a href="#">after grid</a>
