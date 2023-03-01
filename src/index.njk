@@ -60,130 +60,109 @@
     connection_menu_items: connectionMenuItems
   }) }}
 
-  <flow-item id="B" data-next="C" data-prev="A" type="Single question" variant="text" data-row="1" data-col="2" aria-labelledby="B-title">
-    <h2 id="B-title"><a href="#" >
-        <span class="sr-only">Edit page: </span>Your name<span class="sr-only">, Email question page</span>
-      </a></h2>
-      <button>Page Actions</button>
-      <button >Add page</button>
-  </flow-item>
+  {{ component('flow-item', {
+    id: 'B',
+    next: 'C',
+    prev: 'A',
+    row: 1,
+    col: 2,
+    title: 'Your name',
+    type: 'Single question',
+    variant: 'text',
+    page_menu_items: pageMenuItems,
+    connection_menu_items: connectionMenuItems
+  }) }}
 
-  <flow-item id="C" data-next="D" data-prev="B" type="Single question" variant="email" data-row="1" data-col="3" aria-labelledby="C-title">
-      <h2 id="C-title"><a href="#">
-        <span class="sr-only">Edit page: </span>Your email<span class="sr-only">, Text question page</span>
-      </a></h2>
-      <button aria-hidden="true">Page Actions</button>
+  {{ component('flow-item', {
+    id: 'C',
+    next: 'D',
+    prev: 'B',
+    row: 1,
+    col: 3,
+    title: 'Your email',
+    type: 'Single question',
+    variant: 'email',
+    page_menu_items: pageMenuItems,
+    connection_menu_items: connectionMenuItems
+  }) }}
 
-      <activated-menu id="outer">
-        <a href="#" data-element="activated-menu-trigger" data-somehting="shgh" class="i-should-still-be-there">Add Page</a>
-        <ul data-element="activated-menu-items" hidden>
-          <li>
-            <activated-menu id="inner">
-              <a href="#" data-element="activated-menu-trigger">Add single question page</a>
-              <ul data-element="activated-menu-items" hidden>
-                <li><a href="#">Text</a></li>
-                <li><a href="#">Textarea</a></li>
-                <li><a href="#">Email Address</a></li>
-                <li><a href="#">Number</a></li>
-                <li><a href="#">Date</a></li>
-                <li><a href="#">Radio buttons</a></li>
-                <li><a href="#">Checkboxes</a></li>
-                <li><a href="#">Autocomplete</a></li>
-                <li><a href="#">File upload</a></li>
-              </ul>
-            </activated-menu>
-          </li>
-          <li><a href="#">Add Multi question page</a></li>
-          <li><a href="#">Add content page</a></li>
-          <li><a href="#">Add exit page</a></li>
-          <li><a href="#">Add branching</a></li>
-          <li><a href="#">Change next page</a></li>
-        </ul>
-      </activated-menu>
-  </flow-item>
+  {{ component('flow-item', {
+    id: 'D',
+    next: 'G',
+    prev: 'C',
+    row: 1,
+    col: 4,
+    title: 'Toast topping preferences',
+    type: 'Multi question',
+    page_menu_items: pageMenuItems,
+    connection_menu_items: connectionMenuItems
+  }) }}
 
-  <flow-item id="D" data-next="G" data-prev="C" type="Multi question" data-row="1" data-col="4">
-    <h2><a href="#" >
-        <span class="sr-only">Edit page: </span>Toast topping preferences<span class="sr-only">, Multi question page</span>
-    </a></h2>
+  {{ component('branching-point', {
+    id: 'G',
+    next: 'E',
+    prev: 'D',
+    row: 1,
+    col: 5,
+    title: 'Branching point 1',
+    type: 'Branching point',
+    page_menu_items: pageMenuItems,
+    connection_menu_items: connectionMenuItems,
+    conditions: [
+      {
+        question: 'Do you like marmite?',
+        operator: 'is',
+        value: 'Love it',
+        target_id: 'E',
+        target_title: 'Check your answers'
+      },
+      {
+        question: 'Do you like marmite?',
+        operator: 'is',
+        value: 'Hate it',
+        target_id: 'E',
+        target_title: 'Check your answers'
+      },
+      {
+        target_id: 'E',
+        target_title: 'Check your answers'
+      }
+    ]
+  }) }}
 
-      <activated-menu trigger-label="Page Actions">
-        <ul data-element="activated-menu-items">
-          <li><a href="#">Edit page</a></li>
-          <li><a href="#">Preview page</a></li>
-          <li><a href="#">Move page...</a></li>
-          <li><a href="#">Delete page...</a></li>
-        </ul>
-      </activated-menu>
+  {{ component('flow-item', {
+    id: 'H',
+    prev: 'G',
+    row: 3,
+    col: 7,
+    title: 'Your opinion is not strong enough',
+    type: 'Exit',
+    page_menu_items: pageMenuItems,
+    connection_menu_items: connectionMenuItems
+  }) }}
 
-      <activated-menu trigger-label="Add Page">
-        <a href="#">Add Page</a>
-        <ul data-element="activated-menu-items" hidden>
-          <li><a href="#">Add single question page</a></li>
-          <li><a href="#">Add Multi question page</a></li>
-          <li><a href="#">Add content page</a></li>
-          <li><a href="#">Add exit page</a></li>
-          <li><a href="#">Add branching</a></li>
-          <li><a href="#">Change next page</a></li>
-        </ul>
-      </activated-menu>
-  </flow-item>
+  {{ component('flow-item', {
+    id: 'E',
+    next: 'F',
+    prev: 'G',
+    row: 1,
+    col: 7,
+    title: 'Check your answers',
+    type: 'Checkanswers',
+    page_menu_items: pageMenuItems,
+    connection_menu_items: connectionMenuItems
+  }) }}
 
-  <flow-item id="G" data-next="E" data-prev="D" type="Branching point" data-row="1" data-col="5" >
-    <div>
-      <h2><a href="#">
-          <span class="sr-only">Edit: </span>Branching point 1<span class="sr-only">, 3 branches</span>
-      </a></h2>
-      <button>Branch Actions</button>
-    </div>
-
-    <ul class="conditions">
-      <li data-row="1" data-col="6">
-        <h3><a href="#E" data-target="E" >
-              <span class="sr-only">Branch 1 of 3: If </span>Do you like marmite <b>is</b> Love it<span class="sr-only">, go to Check your answers</span>
-          </a></h3>
-        <button>Add page</button>
-      </li>
-      <li data-row="2" data-col="6">
-        <h3><a href="#E" data-target="E">
-            <span class="sr-only">Branch 2 of 3: If </span>Do you like marmite <b>is</b> Hate it<span class="sr-only">, go to Check your answers</span>
-
-          </a></h3>
-        <button>Add page</button>
-      </li>
-      <li data-row="3" data-col="6">
-        <h3><a href="#H" data-target="H">
-          <span class="sr-only">Branch 3 of 3: If </span>Otherwise<span class="sr-only">, go to Your opinion is not strong enough</span>
-
-          </a></h3>
-        <button>Add page</button>
-        </li>
-    </ul>
-  </flow-item>
-
-  <flow-item id="H" data-prev="G" data-row="3" data-col="7">
-    <h2><a href="#" >
-        <span class="sr-only">Edit: </span>Your opinion is not strong enough<span class="sr-only">, Exit page</span>
-    </a></h2>
-      <button>Page Actions</button>
-      <button>Add page</button>
-  </flow-item>
-
-  <flow-item id="E" data-next="F" data-prev="G" type="Check your answers" data-row="1" data-col="7">
-      <h2><a href="#">
-        <span class="sr-only">Edit page: </span>Check your answers<span class="sr-only">, Check your answers page</span>
-        </a></h2>
-      <button>Page Actions</button>
-      <button>Add page</button>
-  </flow-item>
-
-  <flow-item id="F" data-prev="E" type="Confirmation" data-row="1" data-col="8">
-    <h2><a href="#">
-        <span class="sr-only">Edit page: </span>Application complete<span class="sr-only">, Confirmation page</span>
-      </a></h2>
-      <button>Page Actions</button>
-      <button>Add page</button>
-  </flow-item>
+  {{ component('flow-item', {
+    id: 'F',
+    prev: 'E',
+    row: 1,
+    col: 8,
+    title: 'Application Complete',
+    type: 'Confirmation',
+    page_menu_items: pageMenuItems,
+    connection_menu_items: connectionMenuItems
+  }) }}
 </flow-grid>
 
 <a href="#">after grid</a>

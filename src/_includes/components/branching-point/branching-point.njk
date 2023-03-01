@@ -1,0 +1,47 @@
+{%- from "../../system/component.njk" import component -%}
+{%- from "../../system/attribute-if-present.njk" import attributeIfPresent -%}
+
+{% set conditionRow = params.row %}
+{% set conditionCol = params.col + 1 %}
+
+<flow-item id="{{ params.id }}"
+           type="{{params.type}}"
+           {{ attributeIfPresent('data-next', params.next) }}
+           {{ attributeIfPresent('data-prev', params.prev) }}
+           {{ attributeIfPresent('aria-label', params.label ) }}
+           data-row="{{ params.row }}"
+           data-col="{{ params.col }}">
+
+  <h2><a href="#" >
+      <span class="sr-only">Edit page: </span>{{ params.title }}<span class="sr-only">, {{ params.type }} page</span>
+  </a></h2>
+
+  {{ component('activated-menu', {
+    triggerLabel: 'Branch actions',
+    items: params.page_menu_items
+  }) }}
+
+
+  <ul class="conditions">
+    {% for condition in params.conditions %}
+        <li data-row="{{ params.row + loop.index0 }}" data-col="{{ params.col + 1 }}">
+          <h3><a href="#{{condition.target_id}}" data-target="{{condition.target_id}}" >
+                <span class="sr-only">Branch {{loop.index}} of {{loop.length}}: </span>
+                {% if condition.question %}
+                  If {{condition.question}} <b>{{condition.operator}}</b> {{condition.value}}
+                {% else %}
+                  Otherwise
+                {% endif %}
+                <span class="sr-only">, go to {{condition.target_title}}</span>
+            </a></h3>
+
+          {{ component('activated-menu', {
+            triggerLabel: 'Add page',
+            items: params.connection_menu_items
+          }) }}
+        </li>
+    {% endfor %}
+  </ul>
+
+</flow-item>
+

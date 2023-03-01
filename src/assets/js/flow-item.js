@@ -25,7 +25,7 @@ class FlowItem extends HTMLElement {
   }
 
   get interactiveElements() {
-    return this.querySelectorAll(':scope h2 > a, :scope button:not(.activated-menu__panel *), :scope > [role="grid"], :scope ul.conditions a, :scope ul.conditions button');
+    return this.querySelectorAll(':scope h2 > a, :scope button:not(.activated-menu__panel *), :scope > [role="grid"], :scope ul.conditions a, :scope ul.conditions button:not(.activated-menu__panel *)');
   }
 
   get type() {
@@ -82,6 +82,7 @@ class FlowItem extends HTMLElement {
   }
 
   focusNext() {
+    console.log(this.interactiveElements)
     let index = this.currentFocusIndex;
     if(index === undefined) index = -1
     ++index;

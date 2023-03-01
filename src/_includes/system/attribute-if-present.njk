@@ -1,0 +1,5 @@
+{% macro attributeIfPresent(attribute, value) %}
+    {% if value %}
+        {{attribute}}="{{ value }}"
+    {% endif %}
+ {% endmacro %}
