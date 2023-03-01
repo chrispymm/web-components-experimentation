@@ -25,8 +25,7 @@ class FlowItem extends HTMLElement {
   }
 
   get interactiveElements() {
-    //return getFocusableElements(this);
-    return this.querySelectorAll(':scope h2 > a, :scope button, :scope > [role="grid"], :scope ul.conditions a, :scope ul.conditions button');
+    return this.querySelectorAll(':scope h2 > a, :scope button:not(.activated-menu__panel *), :scope > [role="grid"], :scope ul.conditions a, :scope ul.conditions button');
   }
 
   get type() {

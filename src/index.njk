@@ -1,3 +1,7 @@
+{%- from "system/component.njk" import component -%}
+{%- from "system/connection-menu-items.njk" import connectionMenuItems  -%}
+{%- from "system/page-menu-items.njk" import pageMenuItems -%}
+
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
@@ -40,16 +44,21 @@
 
 <a href="#">before grid</a>
 
+
 <h1 id="page-title">Pages Flow</h1>
 
 <flow-grid aria-labelledby="page-title" aria-description="Use left and right arrow keys to navigate the pages in your form">
-  <flow-item id="A" data-next="B" aria-label="Welcome" data-row="1" data-col="1">
-    <h2><a href="#" >
-        <span class="sr-only">Edit page: </span>Welcome<span class="sr-only">, Start page</span>
-    </a></h2>
-      <button>Page Actions</button>
-      <button>Add page</button>
-  </flow-item>
+
+  {{ component('flow-item', {
+    id: 'A',
+    next: 'B',
+    row: 1,
+    col: 1,
+    title: 'Start here',
+    type: 'Start page',
+    page_menu_items: pageMenuItems,
+    connection_menu_items: connectionMenuItems
+  }) }}
 
   <flow-item id="B" data-next="C" data-prev="A" type="Single question" variant="text" data-row="1" data-col="2" aria-labelledby="B-title">
     <h2 id="B-title"><a href="#" >
@@ -65,10 +74,25 @@
       </a></h2>
       <button aria-hidden="true">Page Actions</button>
 
-      <activated-menu trigger-label="Add Page">
-        <a href="#">Add Page</a>
+      <activated-menu id="outer">
+        <a href="#" data-element="activated-menu-trigger" data-somehting="shgh" class="i-should-still-be-there">Add Page</a>
         <ul data-element="activated-menu-items" hidden>
-          <li><a href="#">Add single question page</a></li>
+          <li>
+            <activated-menu id="inner">
+              <a href="#" data-element="activated-menu-trigger">Add single question page</a>
+              <ul data-element="activated-menu-items" hidden>
+                <li><a href="#">Text</a></li>
+                <li><a href="#">Textarea</a></li>
+                <li><a href="#">Email Address</a></li>
+                <li><a href="#">Number</a></li>
+                <li><a href="#">Date</a></li>
+                <li><a href="#">Radio buttons</a></li>
+                <li><a href="#">Checkboxes</a></li>
+                <li><a href="#">Autocomplete</a></li>
+                <li><a href="#">File upload</a></li>
+              </ul>
+            </activated-menu>
+          </li>
           <li><a href="#">Add Multi question page</a></li>
           <li><a href="#">Add content page</a></li>
           <li><a href="#">Add exit page</a></li>

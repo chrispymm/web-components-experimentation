@@ -1,0 +1,18 @@
+{%- from "../../system/component.njk" import component -%}
+
+<flow-item id="{{ params.id }}" data-next="{{ params.next }}" aria-label="{{ params.label }}" data-row="{{ params.row }}" data-col="{{ params.col }}">
+  <h2><a href="#" >
+      <span class="sr-only">Edit page: </span>{{ params.title }}<span class="sr-only">, {{ params.type }}</span>
+  </a></h2>
+
+    {{ component('activated-menu', {
+      triggerLabel: 'Page actions',
+      items: params.page_menu_items
+    }) }}
+
+    {{ component('activated-menu', {
+      triggerLabel: 'Add page',
+      items: params.connection_menu_items
+    }) }}
+</flow-item>
+

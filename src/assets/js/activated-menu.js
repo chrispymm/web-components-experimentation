@@ -30,7 +30,12 @@ class ActivatedMenu extends HTMLElement {
 
   connectedCallback() {
     this.initialMarkup = this.innerHTML;
+    this.convertLinksToButtons();
     this.menuItemsMarkup = this.querySelector('[data-element="activated-menu-items"]').outerHTML;
+    this.triggerMarkup = `
+      <button class="activated-menu__trigger" data-element="activated-menu-trigger" type="button" aria-haspopup="menu">
+        <span>${this.triggerLabel}</span>
+      </button>`
     this.render();
   }
 
@@ -39,19 +44,56 @@ class ActivatedMenu extends HTMLElement {
   }
 
   get triggerLabel() {
-    return this.getAttribute('trigger-label');
+    const triggerElement = this.querySelector('[data-element="activated-menu-trigger"]');
+    let triggerLabel;
+
+    if(triggerElement) {
+      triggerLabel = this.querySelector('[data-element="activated-menu-trigger"]').innerText;
+    } else {
+      triggerLabel = this.getAttribute('trigger-label') || 'Open';
+    }
+
+    return triggerLabel;
   }
 
   get items() {
     return this.querySelectorAll('li');
   }
 
+  get isSubmenu() {
+    return !!this.parentNode.closest('activated-menu');
+  }
+
+  convertLinksToButtons(){
+    const links = this.querySelectorAll('a');
+    links.forEach( (link) => {
+      const button = document.createElement('button');
+      button.setAttribute('type','button');
+      this.cloneElementAttributes(link, button, ['href']);
+      this.cloneElementDataset(link, button);
+      button.innerHTML = link.innerHTML;
+      link.replaceWith(button);
+    });
+  }
+
+  cloneElementAttributes(source,target,exclude=[]){
+    [...source.attributes].filter( attr => !exclude.includes(attr.nodeName) )
+                          .forEach( attr => { target.setAttribute(attr.nodeName, attr.nodeValue) })
+  }
+
+  cloneElementDataset(source, target, exclude=[]) {
+    let attributes = [];
+    for( let attr in source.dataset) {
+      attributes.push( [ attr,source.dataset[attr] ] );
+    }
+    attributes.filter( ([attr, _]) => { return !exclude.includes(attr)})
+                       .forEach( ([attr, value]) => { target.dataset[attr] = value })
+  }
+
   render() {
     this.innerHTML = `
-      <div class="activated-menu" data-element="activated-menu-root">
-        <button class="activated-menu__trigger" data-element="activated-menu-trigger" type="button" aria-haspopup="menu">
-          <span>${this.triggerLabel}</span>
-        </button>
+      <div class="activated-menu" data-element="activated-menu-root" data-id="${this.getAttribute('id')}" status="${this.state.status}">
+        ${this.triggerMarkup}
         <div class="activated-menu__panel" data-element="activated-menu-panel">
           ${this.menuItemsMarkup}
         </div>
@@ -67,19 +109,54 @@ class ActivatedMenu extends HTMLElement {
     this.root = this.querySelector('[data-element="activated-menu-root"]');
     this.menu = this.querySelector('[data-element="activated-menu-items"]');
     this.menuItems = this.menu.querySelectorAll(':scope > li');
-    this.focusableElements = getFocusableElements(this);
+    this.focusableElements = this.querySelectorAll(':scope > ul li button:first-of-type');
 
     if (this.trigger && this.panel) {
       this.panel.querySelector('ul').setAttribute('role', 'menu')
       this.menuItems.forEach( item => item.setAttribute('role', 'menuitem'));
 
-      this.toggle();
-
       this.trigger.addEventListener('click', event => {
         event.preventDefault();
-
         this.toggle();
       });
+
+      this.trigger.addEventListener('keydown', event => {
+        let key = event.key;
+          switch(key) {
+            case 'Enter':
+              setTimeout(() => {
+                this.focusItem(0);
+              }, 50);
+              break;
+          }
+      });
+
+      this.trigger.addEventListener('keyup', event => {
+          let key = event.key;
+          switch(key) {
+            case 'Space':
+              setTimeout(() => {
+                this.focusItem(0);
+              }, 50);
+              break;
+          }
+      });
+
+      this.addEventListener('mouseover',(event) => {
+        if(this.isSubmenu) {
+          if(this.state.status === 'closed') {
+            this.state.status = 'open';
+          }
+        }
+      })
+
+      this.addEventListener('mouseleave',(event) => {
+        if(this.isSubmenu) {
+          if(this.state.status === 'open') {
+            this.state.status = 'closed';
+          }
+        }
+      })
 
       this.root.addEventListener('keydown', event => {
         if(this.state.status === 'open') {
@@ -150,13 +227,17 @@ class ActivatedMenu extends HTMLElement {
     this.manageFocus();
 
     switch (this.state.status) {
-      case 'closed':
-        this.trigger.setAttribute('aria-expanded', 'false');
-        break;
       case 'open':
-      case 'initial':
         this.trigger.setAttribute('aria-expanded', 'true');
-        this.focusItem(0);
+        this.panel.addEventListener('mouseleave', event => {
+              setTimeout( (e) => {
+                this.state.status = 'closed'
+              }, 30);
+        });
+        break;
+      case 'closed':
+      case 'initial':
+        this.trigger.setAttribute('aria-expanded', 'false');
         break;
     }
   }
@@ -167,6 +248,7 @@ class ActivatedMenu extends HTMLElement {
         this.focusableElements.forEach(element => element.removeAttribute('tabindex'));
         break;
       case 'closed':
+        console.log(this.focusableElements);
         [...this.focusableElements]
           .filter(
             element => element.getAttribute('data-element') !== 'activated-menu-trigger'
@@ -179,8 +261,7 @@ class ActivatedMenu extends HTMLElement {
   focusItem(index=0) {
     if(index > this.menuItems.length - 1) index = 0;
     if(index < 0 ) index = this.menuItems.length - 1;
-
-    const item = this.menuItems.item(index).querySelector('a:first-child');
+    const item = this.menuItems.item(index).querySelector('button');
 
     if(item.hasAttribute('aria-disabled')) {
       // if item is disabled, skip it
@@ -192,7 +273,6 @@ class ActivatedMenu extends HTMLElement {
     } else {
       this.currentFocusIndex = index;
       item.focus();
-      //this.$node.attr('aria-activedescendant', $item.attr('id'));
     }
   }
 

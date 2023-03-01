@@ -142,9 +142,10 @@ activated-menu ul {
 .activated-menu__panel {
   background: white;
   position: absolute;
-  top: 0;
+  top: 0px;
   left: 0;
   border: 2px solid;
+  width: 200px;
 }
 
 .activated-menu ul {
@@ -154,18 +155,35 @@ activated-menu ul {
   padding: 0;
 }
 
-.activated-menu a {
+.activated-menu ul button {
   display: block;
   padding: 4px 6px;
+  width:100%;
+  background:none;
+  border: none;
+  text-align: left;
+  -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
-.activated-menu[status="closed"] .activated-menu__panel {
+.activated-menu button:focus,
+.activated-menu button:hover {
+  background: yellow;
+  color: black;
+}
+
+.activated-menu[status="closed"] > .activated-menu__panel {
   display: none;
 }
 
-.activated-menu[status="open"] .activated-menu__panel {
+.activated-menu[status="open"] > .activated-menu__panel {
   display: block;
   z-index: 20;
+}
+
+.activated-menu .activated-menu .activated-menu__panel {
+  left: 200px;
+  top: -2px;
 }
 
 
