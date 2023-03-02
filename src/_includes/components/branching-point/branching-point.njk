@@ -1,9 +1,6 @@
 {%- from "../../system/component.njk" import component -%}
 {%- from "../../system/attribute-if-present.njk" import attributeIfPresent -%}
 
-{% set conditionRow = params.row %}
-{% set conditionCol = params.col + 1 %}
-
 <flow-item id="{{ params.id }}"
            type="{{params.type}}"
            {{ attributeIfPresent('data-next', params.next) }}
@@ -18,7 +15,10 @@
 
   {{ component('activated-menu', {
     triggerLabel: 'Branch actions',
-    items: params.page_menu_items
+    items: params.page_menu_items,
+    noJs: {
+      hideActivator: true
+    }
   }) }}
 
 
@@ -32,12 +32,16 @@
                 {% else %}
                   Otherwise
                 {% endif %}
-                <span class="sr-only">, go to {{condition.target_title}}</span>
+                {% set id = condition.target_id %}
+                <span class="sr-only">, go to {{flow[id].title}}</span>
             </a></h3>
 
           {{ component('activated-menu', {
             triggerLabel: 'Add page',
-            items: params.connection_menu_items
+            items: params.connection_menu_items,
+            noJs: {
+              hideMenu: true
+            }
           }) }}
         </li>
     {% endfor %}

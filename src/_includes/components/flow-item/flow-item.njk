@@ -15,12 +15,18 @@
 
   {{ component('activated-menu', {
     triggerLabel: 'Page actions',
-    items: params.page_menu_items
+    items: params.page_menu_items,
+    noJs: {
+      hideActivator: true
+    }
   }) }}
 
   {{ component('activated-menu', {
     triggerLabel: 'Add page',
-    items: params.connection_menu_items
+    items: params.connection_menu_items,
+    noJs: {
+      hideMenu: true
+    }
   }) }}
 
 </flow-item>
