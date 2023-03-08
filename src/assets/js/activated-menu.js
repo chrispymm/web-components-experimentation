@@ -33,7 +33,7 @@ class ActivatedMenu extends HTMLElement {
     this.convertLinksToButtons();
     this.menuItemsMarkup = this.querySelector('[data-element="activated-menu-items"]').outerHTML;
     this.triggerMarkup = `
-      <button class="activated-menu__trigger" data-element="activated-menu-trigger" type="button" aria-haspopup="menu">
+      <button class="activated-menu__trigger ${this.triggerClass}" data-element="activated-menu-trigger" type="button" aria-haspopup="menu">
         <span>${this.triggerLabel}</span>
       </button>`
     this.render();
@@ -54,6 +54,10 @@ class ActivatedMenu extends HTMLElement {
     }
 
     return triggerLabel;
+  }
+
+  get triggerClass() {
+    return this.getAttribute('trigger-class');
   }
 
   get items() {

@@ -12,6 +12,8 @@
     "@11ty/eleventy": "^2.0.0-beta.3"
   },
   "dependencies": {
+    "eleventy-sass": "^2.2.1",
+    "govuk-frontend": "^4.5.0",
     "tabbable": "^6.0.1"
   }
 }

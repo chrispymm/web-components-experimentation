@@ -1,0 +1,140 @@
+:root {
+
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+html {
+  // background-color: govuk-colour("light-grey");
+  min-height: 100%;
+  position: relative;
+}
+
+body {
+  position: relative;
+  // display: flex;
+  // flex-direction: column;
+  // min-height: 100vh;
+
+}
+
+#main-content {
+  position: relative;
+}
+
+#ServicesContentScrollContainer {
+  // Due to layout element of GDS templates, the scroll dimensions
+  // need to be calculated by JS (cannot just use width:100%).
+  background-color: govuk-colour("white");
+  box-sizing: border-box;
+  overflow: visible;
+  position: relative;
+  z-index: 0; // prevents very tall first flow conditions breaking out and overlapping header/preview button
+}
+
+#flow-overview {
+  background-color: govuk-colour("white");
+  min-height: 200px; // Temporary workaround of intermittent height calculation issues
+  position: relative;
+}
+
+#flow-overview .flow-item .page-menu {
+  display: inline-block;
+left: 157px;
+// opacity: 0;
+overflow: hidden;
+position: absolute;
+top: 82px;
+}
+
+#flow-overview .flow-item .connection-menu {
+display: inline-block;
+left: calc(100% + 10px);
+overflow: hidden;
+position: absolute;
+top: 46px;
+}
+
+
+
+///////////////////////
+// NEW STUFF FOR SCROLLING
+//
+.scroll {
+  position: relative;
+  overflow-x:scroll;
+  width:100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.govuk-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 20;
+}
+
+.fb-sub-header {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100vw;
+  z-index: 10;
+  background-color: white;
+}
+
+.flow-titlebar {
+  margin-top: 30px;
+}
+
+.govuk-footer {
+  margin-top: auto;
+  position: sticky;
+  left:0;
+  width:100vw;
+}
+
+#ServicesContentScrollContainer {
+  position: relative;
+  top: 200px;
+}
+
+h2, h3 {
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+
+.sr-only {
+  border: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  -webkit-clip-path: inset(50%) !important;
+  clip-path: inset(50%) !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+  white-space: nowrap !important;
+}
+
+
+
+[hidden] {
+  display: none;
+}
+
+a[disabled] {
+  pointer-events: none;
+}
+
+.width-responsive-two-thirds {
+  // @include responsive_width("two-thirds");
+}

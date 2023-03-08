@@ -1,0 +1,35 @@
+// Default no-js styles for components
+flow-grid {
+  display: block;
+  max-width: 1000px;
+  margin-bottom: 4rem;
+}
+
+flow-grid > * + * {
+  border-top: 1px solid;
+}
+
+flow-grid > *:focus-visible {
+  outline: 3px solid govuk-colour('yellow');
+}
+
+
+
+// Styles for components once they are enhanced.
+flow-grid.enhanced {
+  max-width: none;
+}
+
+flow-grid.enhanced > [role="row"] {
+  position: relative;
+  height: calc( (var(--item-height) + var(--gap-y))  * var(--rows));
+  border: none;
+}
+
+flow-grid.enhanced > [role="row"]  > * + * {
+  border-top: none !important;
+}
+
+flow-grid.enhanced > .active {
+  outline: 3px solid red;
+}

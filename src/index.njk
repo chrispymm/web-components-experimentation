@@ -1,81 +1,36 @@
-{%- from "system/component.njk" import component with context-%}
-{%- from "system/connection-menu-items.njk" import connectionMenuItems  -%}
-{%- from "system/page-menu-items.njk" import pageMenuItems -%}
-
-<!DOCTYPE html>
-<html lang="en" class="no-js">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Accessible Flow View - List Branch Conditions</title>
-  <script type="importmap">
-  {
-    "imports": {
-      "tabbable": "/assets/js/utils/tabbable.js"
-    }
-  }
-  </script>
-  <script type="module">
-    document.documentElement.classList.remove('no-js');
-    document.documentElement.classList.add('js');
-  </script>
+---
+layout: base.njk
+---
 
 
 
-  <link rel="stylesheet" href="/assets/css/index.css">
 
-  <script src="/assets/js/activated-menu.js" type="module"></script>
-  <script src="/assets/js/flow-grid.js" type="module"></script>
-  <script src="/assets/js/flow-item.js" type="module"></script>
-</head>
 
-<body>
-<template id="flow-grid-template">
-  <div role="row" part="row">
-    <slot></slot>
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m" id="main-content" role="main">
+  <div class="fb-main-grid-wrapper" data-block-id="services" data-block-type="page" data-block-pagetype="services">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl" data-block-id="forms-heading" data-block-property="heading">Your forms</h1>
+
+        <ul class="fb-editor-list fb-editor-form-list">
+            <li id="service-checkanswers-content-test">
+              <span class="name">
+                Apply for a juggling license
+              </span>
+              <span class="actions">
+                <a class="govuk-link edit" href="/flow">
+                  Edit<span class="sr-only">: Apply for a juggling license</span>
+                </a>
+                <a class="govuk-link" target="_blank" href="#">
+                  Preview<span class="sr-only">: Apply for a juggling license</span>
+                </a>
+              </span>
+            </li>
+          </ul>
+        <button class="DialogActivator govuk-button fb-govuk-button" id="new-service-create-dialog167784779805406320603649827088">Create a new form</button>
+      </div>
+    </div>
   </div>
-</template>
-
-<template id="flow-item-template">
-    <slot></slot>
-</template>
+</main>
 
 
-<a href="#">before grid</a>
-
-
-<h1 id="page-title">Pages Flow</h1>
-
-<flow-grid aria-labelledby="page-title" aria-description="Use left and right arrow keys to navigate the pages in your form">
-  {% set col = 1 %}
-
-  {% for id, item in flow %}
-    {{ component( item.component, {
-      id: id,
-      next: item.next,
-      prev: item.prev,
-      row: item.row if item.row else 1,
-      col: item.col if item.col else col,
-      title: item.title,
-      type: item.type,
-      variant: item.variant,
-      conditions: item.conditions,
-      page_menu_items: pageMenuItems,
-      connection_menu_items: connectionMenuItems
-    }) }}
-
-    {% set col = col + 1 %}
-
-    {% if item.component == 'branching-point' %}
-      {% set col = col + 1 %}
-    {% endif %}
-
-  {% endfor %}
-
-</flow-grid>
-
-<a href="#">after grid</a>
-
-</body>
-</html>

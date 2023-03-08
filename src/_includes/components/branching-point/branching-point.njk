@@ -1,17 +1,21 @@
 {%- from "../../system/component.njk" import component -%}
 {%- from "../../system/attribute-if-present.njk" import attributeIfPresent -%}
 
-<flow-item id="{{ params.id }}"
+<flow-branch id="{{ params.id }}"
            type="{{params.type}}"
+           data-row="{{ params.row }}"
+           data-col="{{ params.col }}"
+           href="{{ params.href }}"
+           data-title="{{ params.title }}"
            {{ attributeIfPresent('data-next', params.next) }}
            {{ attributeIfPresent('data-prev', params.prev) }}
-           {{ attributeIfPresent('aria-label', params.label ) }}
-           data-row="{{ params.row }}"
-           data-col="{{ params.col }}">
+           {{ attributeIfPresent('aria-label', params.label ) }}>
 
-  <h2><a href="#" >
+  <h2>
+    <a href="#" class="govuk-link" >
       <span class="sr-only">Edit page: </span>{{ params.title }}<span class="sr-only">, {{ params.type }} page</span>
-  </a></h2>
+    </a>
+  </h2>
 
   {{ component('activated-menu', {
     triggerLabel: 'Branch actions',
@@ -24,7 +28,7 @@
 
   <ul class="conditions">
     {% for condition in params.conditions %}
-        <li data-row="{{ params.row + loop.index0 }}" data-col="{{ params.col + 1 }}">
+        <li data-row="{{ params.row + loop.index0 }}">
           <h3><a href="#{{condition.target_id}}" data-target="{{condition.target_id}}" >
                 <span class="sr-only">Branch {{loop.index}} of {{loop.length}}: </span>
                 {% if condition.question %}
@@ -47,5 +51,5 @@
     {% endfor %}
   </ul>
 
-</flow-item>
+</flow-branch>
 

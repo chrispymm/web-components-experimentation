@@ -1,0 +1,143 @@
+flow-branch {
+  display: block;
+}
+
+flow-branch h2 {
+  margin-right: auto;
+}
+
+flow-branch > *:first-child {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+flow-branch ul.conditions li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+
+
+
+
+.flow-branch {
+  border:  none;
+
+  img {
+    height: 125px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: inherit;
+  }
+
+  & h2 {
+    position: absolute;
+    margin: 0;
+    z-index: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  & h2 a {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    top: 30px;
+    left: 48px;
+    right:48px;
+    bottom: 30px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  // without clip-path support we use the imagemap, so hide the svg element
+  & svg {
+    display: none;
+  }
+
+  @supports(clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%)) {
+    // if the browser supports clip-path we don't need the imagemap
+    & img,
+    & map {
+      display: none;
+    }
+
+    // make the link fill the whole area and clip it
+    & h2 > a {
+     clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+     top: 0;
+     left: 0;
+     right:0;
+     bottom: 0;
+     padding: 30px 48px; // keep text area same as without clip-path
+    }
+
+    // show the svg and make it fill the container
+    & svg {
+      display: block;
+      position: absolute;
+      height: 125px;
+      width: 200px;
+      z-index: -1; // ensure it remains 'under' the link
+      top: 0;
+      left: 0;
+    }
+
+    svg polygon {
+      fill: #fff;
+      stroke: $govuk-link-colour;
+    }
+
+    & > h2 a:focus {
+      // we're filling the svg on focus, so we don't need the box shadow as it
+      // makes the element break out of the diamond
+      box-shadow: none;
+    }
+
+    & > h2 a:focus svg polygon  {
+      fill: govuk-colour('yellow');
+      stroke: govuk-colour('black');
+    }
+  }
+
+// .PageMenuActivator {
+  //   bottom: 10px;
+  //   left: 82px;
+  //   top: calc(125px - 45px);
+  // }
+}
+
+.flow-branch ul.conditions,
+.flow-branch branch-conditions {
+  position: absolute;
+  left: calc( (var(--item-width) + var(--gap-x)));
+  top: 0;
+  width: var(--condition-width);
+  list-style: none;
+}
+
+.flow-branch ul.conditions li,
+.flow-branch branch-conditions branch-condition {
+  position: absolute;
+  width: calc(var(--condition-width) - var(--gap-x));
+  left: 0;
+  top: calc( (var(--item-height) + var(--gap-y))  * var(--row-index));
+}
+
+flow-grid.enhanced branch-conditions [role="row"] {
+  position: relative;
+  height: calc( var(--item-height) + var(--gap-y));
+}
+
+branch-condition:focus-visible {
+  outline: 3px solid yellow;
+}
+branch-condition.active {
+  outline: 3px solid red;
+}

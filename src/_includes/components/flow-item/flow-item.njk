@@ -1,21 +1,27 @@
-{%- from "../../system/component.njk" import component -%}
 {%- from "../../system/attribute-if-present.njk" import attributeIfPresent -%}
 
 <flow-item id="{{ params.id }}"
-           type="{{params.type}}"
+           type="{{params.type | replace(' ', '') | lower }}"
+           variant="{{params.variant | replace(' ', '') | lower }}"
+           data-row="{{ params.row }}"
+           data-col="{{ params.col }}"
+           href="{{ params.href }}"
+           data-title="{{ params.title }}"
            {{ attributeIfPresent('data-next', params.next) }}
            {{ attributeIfPresent('data-prev', params.prev) }}
            {{ attributeIfPresent('aria-label', params.label ) }}
-           data-row="{{ params.row }}"
-           data-col="{{ params.col }}">
+           >
 
-  <h2><a href="#" >
+  <h2>
+    <a href="{{ params.href if params.href else '#' }}" class="govuk-link">
       <span class="sr-only">Edit page: </span>{{ params.title }}<span class="sr-only">, {{ params.type }} page</span>
-  </a></h2>
+    </a>
+  </h2>
 
   {{ component('activated-menu', {
     triggerLabel: 'Page actions',
     items: params.page_menu_items,
+    triggerClass: 'icon-button page-menu',
     noJs: {
       hideActivator: true
     }
@@ -24,6 +30,7 @@
   {{ component('activated-menu', {
     triggerLabel: 'Add page',
     items: params.connection_menu_items,
+    triggerClass: 'icon-button connection-menu',
     noJs: {
       hideMenu: true
     }

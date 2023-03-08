@@ -1,0 +1,32 @@
+---
+layout: base.njk
+title: Apply for a juggling license
+---
+{%- from "system/component.njk" import component -%}
+
+
+
+<div class="fb-sub-header">
+{% block form_navigation %}
+    {% include 'partials/form-navigation.njk' %}
+{% endblock %}
+
+<div class="flow-titlebar govuk-width-container" >
+  <h1 id="pages-flow" class="govuk-heading-xl">Pages flow</h1>
+  <a class="govuk-button fb-govuk-button fb-govuk-button--inline" target="_blank" href="/services/48f82528-41cd-4d60-a5fa-e17f7694a3af/preview">Preview form</a>
+</div>
+</div>
+
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m jsdone" id="main-content" role="main">
+
+  <div id="ServicesContentScrollContainer">
+    <section id="flow-overview">
+      {{ component('flow-grid', {
+      flow: jugglingLicense,
+      labelledBy: 'page-title',
+      describedBy: ''
+      })}}
+    </section>
+  </div>
+</main>
+

@@ -1,3 +1,9 @@
+const ITEM_WIDTH = 200;
+const ITEM_HEIGHT = 125;
+const CONDITION_WIDTH = 450;
+const GAP_X = 100;
+const GAP_Y = 130;
+
 class FlowGrid extends HTMLElement {
   constructor() {
     super()
@@ -9,7 +15,10 @@ class FlowGrid extends HTMLElement {
     this.classList.add('enhanced');
 
     this.createGridRow();
+    this.setStyleProps();
+    this.setItemPositions();
     this.setHeight();
+    this.setWidth();
 
     this.addEventListener('focusin', this.onFocusIn);
     this.addEventListener('focusout', this.onFocusOut);
@@ -49,6 +58,51 @@ class FlowGrid extends HTMLElement {
     this.style.setProperty('--rows', maxRow)
   }
 
+  setStyleProps(){
+    this.style.setProperty('--item-width', `${ITEM_WIDTH}px`);
+    this.style.setProperty('--item-height', `${ITEM_HEIGHT}px`);
+    this.style.setProperty('--condition-width', `${CONDITION_WIDTH}px`);
+    this.style.setProperty('--gap-x', `${GAP_X}px`);
+    this.style.setProperty('--gap-y', `${GAP_Y}px`);
+  }
+
+  setWidth(){
+    //get all items in the first row
+    const cols = this.querySelectorAll('[data-row="1"]');
+    //get branching points in first row
+    const branchingPoints = this.querySelectorAll('[data-row="1"][type="Branching point"]');
+
+    const itemsWidth = (cols.length - branchingPoints.length) * ITEM_WIDTH;
+    const branchesWidth = branchingPoints.length * (ITEM_WIDTH + CONDITION_WIDTH);
+    const gaps = (cols.length - 1) * 100;
+    const width = itemsWidth + branchesWidth + gaps;
+    this.style.width = width+'px';
+  }
+
+  setItemPositions() {
+    const cols = this.querySelectorAll('[data-row="1"]');
+    let left = 0;
+
+    cols.forEach( (col, index) => {
+      let top = 0;
+      let branch = false;
+      const items = this.querySelectorAll(`[data-col="${index+1}"]`);
+
+      items.forEach( (item, index) => {
+        item.style.setProperty('--left', `${left}`);
+        item.style.setProperty('--top', `${top}`);
+        top = top + ITEM_HEIGHT + GAP_Y;
+        branch = branch || (item.getAttribute('type') == 'Branching point')
+      });
+
+      if(branch) {
+        left = left + ITEM_WIDTH + CONDITION_WIDTH + GAP_X;
+      } else {
+        left = left + ITEM_WIDTH + GAP_X;
+      }
+    });
+  }
+
   next() {
     let nextItem;
     if(this.focusedItem) {
@@ -81,7 +135,6 @@ class FlowGrid extends HTMLElement {
      this.removeInteractionFromItems();
       item.setAttribute('tabindex', '0');
       item.focus();
-    item.classList.add('focused');
       this.focusedItem = item;
   }
 

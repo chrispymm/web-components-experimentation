@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Accessible Flow View - List Branch Conditions</title>
+    <script type="importmap">
+    {
+      "imports": {
+        "tabbable": "/assets/js/utils/tabbable.js"
+      }
+    }
+    </script>
+    <script type="module">
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+
+    <link rel="stylesheet" href="/assets/css/index.css">
+
+    <script src="/assets/js/activated-menu.js" type="module"></script>
+    <script src="/assets/js/flow-grid.js" type="module"></script>
+    <script src="/assets/js/flow-item.js" type="module"></script>
+    <script src="/assets/js/flow-branch.js" type="module"></script>
+  </head>
+
+  <body>
+  <div class="scroll">
+  {% block header %}
+    {% include 'partials/header.njk' %}
+  {% endblock %}
+
+  {% block form_navigation %}{% endblock %}
+
+  {{ content | safe }}
+
+  {% block footer %}
+    {% include 'partials/footer.njk' %}
+  {% endblock %}
+  </div>
+  </body>
+
+</html>
