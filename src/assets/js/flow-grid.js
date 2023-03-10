@@ -1,8 +1,8 @@
 const ITEM_WIDTH = 200;
 const ITEM_HEIGHT = 125;
-const CONDITION_WIDTH = 300;
+const CONDITION_WIDTH = 350;
 const GAP_X = 100;
-const GAP_Y = 130;
+const GAP_Y = 125;
 
 class FlowGrid extends HTMLElement {
   constructor() {

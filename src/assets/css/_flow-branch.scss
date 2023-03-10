@@ -24,6 +24,8 @@ flow-branch ul.conditions > li {
 
 
 .flow-branch {
+  --condition-padding: 25px;
+
   border:  none;
 
   img {
@@ -142,7 +144,7 @@ branch-condition.active {
 .flow-branch ul.conditions > li {
   @include list_reset;
   margin: 0 100px 0 0;
-  padding: 0 25px;
+  padding: 0 var(--condition-padding);
   // text-align: center;
 
   h3 {
@@ -168,6 +170,7 @@ branch-condition.active {
 .flow-branch ul.conditions > li {
   position: absolute;
   height:var(--item-height);
+  width:calc( var(--condition-width) - (var(--condition-padding) * 2));
   top: calc( (var(--item-height) / 2 * -1) + (var(--row-index) * (var(--item-height) + var(--gap-y))) );
   align-items: flex-end;
 }
