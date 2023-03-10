@@ -1,0 +1,18 @@
+---
+layout: 'base.njk'
+---
+
+<div class="page-wrapper scroll">
+  {% block header %}
+    {% include 'partials/header.njk' %}
+  {% endblock %}
+
+  {% block form_navigation %}{% endblock %}
+
+  {{ content | safe }}
+
+  {% block footer %}
+    {% include 'partials/footer.njk' %}
+  {% endblock %}
+</div>
+

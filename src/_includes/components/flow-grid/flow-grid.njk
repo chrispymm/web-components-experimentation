@@ -4,6 +4,8 @@
 
 <flow-grid {{ attributeIfPresent('aria-labelledby', params.labelledBy) }} {{ attributeIfPresent('aria-describedby', params.describedBy) }}>
 
+
+
   {% for col in params.flow %}
     {% set col_index = loop.index %}
     {% for item in col %}
@@ -11,6 +13,7 @@
       {{ component( item.component, {
         flow: true,
         id: item.id,
+        href: '/pages/' ~ item.title | slugify ~ '/edit',
         next: item.next,
         prev: item.prev,
         row: row_index,

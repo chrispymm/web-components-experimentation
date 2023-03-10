@@ -12,7 +12,7 @@
            {{ attributeIfPresent('aria-label', params.label ) }}>
 
   <h2>
-    <a href="#" class="govuk-link govuk-link--no-visited-state" >
+  <a href="{{ params.href if params.href else '#' }}" class="govuk-link govuk-link--no-visited-state" >
       <span class="sr-only">Edit page: </span>{{ params.title }}<span class="sr-only">, {{ params.type }} page</span>
     </a>
   </h2>

@@ -1,5 +1,5 @@
 ---
-layout: base.njk
+layout: flow.njk
 title: Apply for a juggling license
 ---
 {%- from "system/component.njk" import component -%}
@@ -7,14 +7,12 @@ title: Apply for a juggling license
 
 
 <div class="fb-sub-header">
-{% block form_navigation %}
     {% include 'partials/form-navigation.njk' %}
-{% endblock %}
 
-<div class="flow-titlebar govuk-width-container" >
-  <h1 id="pages-flow" class="govuk-heading-xl">Pages flow</h1>
-  <a class="govuk-button fb-govuk-button fb-govuk-button--inline" target="_blank" href="/services/48f82528-41cd-4d60-a5fa-e17f7694a3af/preview">Preview form</a>
-</div>
+  <div class="flow-titlebar govuk-width-container" >
+    <h1 id="pages-flow" class="govuk-heading-xl">Pages flow</h1>
+    <a class="govuk-button fb-govuk-button fb-govuk-button--inline" target="_blank" href="/services/48f82528-41cd-4d60-a5fa-e17f7694a3af/preview">Preview form</a>
+  </div>
 </div>
 
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m jsdone" id="main-content" role="main">
@@ -22,12 +20,11 @@ title: Apply for a juggling license
   <div id="ServicesContentScrollContainer">
     <section id="flow-overview">
       {{ component('flow-grid', {
-      flow: jugglingLicense,
+      flow: jugglingLicense.flow,
       labelledBy: 'page-title',
       describedBy: ''
       })}}
     </section>
-
     {% include 'partials/standalone-pages.njk' %}
   </div>
 </main>

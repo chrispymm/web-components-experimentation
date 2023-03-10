@@ -4,21 +4,18 @@
 
     <div data-element="expanding-section-panel">
     <ul class="govuk-navigation pages">
-      {% for col in standalonePages %}
+      {% for item in jugglingLicense.standalone %}
         {% set col_index = loop.index %}
-        {% for item in col %}
-          {% set row_index = loop.index %}
-          <li class="page">
-              {{ component( item.component, {
-                id: item.id,
-                row: row_index,
-                col: col_index,
-                title: item.title,
-                type: item.type
-                })
-              }}
-          </li>
-        {% endfor %}
+        <li class="page">
+            {{ component( item.component, {
+              id: item.id,
+              row: 1,
+              col: col_index,
+              title: item.title,
+              type: item.type
+              })
+            }}
+        </li>
       {% endfor %}
   </ul>
     </div>

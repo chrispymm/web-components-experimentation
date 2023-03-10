@@ -167,14 +167,21 @@ top: calc(50% - 17px);
 ///////////////////////
 // NEW STUFF FOR SCROLLING
 //
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  .govuk-footer {
+    margin-top: auto;
+  }
+}
+
 .scroll {
   position: relative;
   overflow-x:scroll;
   width:100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+
 
 .govuk-header {
   position: fixed;
@@ -202,6 +209,7 @@ top: calc(50% - 17px);
   position: sticky;
   left:0;
   width:100vw;
+}
 }
 
 #ServicesContentScrollContainer {

@@ -29,19 +29,9 @@
   </head>
 
   <body>
-  <div class="scroll">
-  {% block header %}
-    {% include 'partials/header.njk' %}
-  {% endblock %}
-
-  {% block form_navigation %}{% endblock %}
 
   {{ content | safe }}
 
-  {% block footer %}
-    {% include 'partials/footer.njk' %}
-  {% endblock %}
-  </div>
   </body>
 
 </html>

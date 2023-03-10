@@ -8,7 +8,7 @@ class FlowItem extends HTMLElement {
   connectedCallback() {
     this.initialMarkup = this.innerHTML;
     this.thumbnailHTML = `
-      <a href="" aria-hidden="true" tabindex="-1">
+      <a href="${this.href}" aria-hidden="true" tabindex="-1">
         <img class="header" alt="" src="/assets/img/thumbnails/thumbs_header.png">
         <span class="text">${this.title}</span>
         <img class="body" alt="" src="/assets/img/thumbnails/${this.thumbnail}">

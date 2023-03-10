@@ -1,4 +1,25 @@
-module.exports = [
+const standalone = [
+  {
+    "id": "cookies",
+    "title": "Cookies",
+    "type": "standalone",
+    "component": "flow-item"
+  },
+  {
+    "id": "privacy",
+    "title": "Privacy",
+    "type": "standalone",
+    "component": "flow-item"
+  },
+  {
+    "id": "accessibility",
+    "title": "Accessibility",
+    "type": "standalone",
+    "component": "flow-item"
+  },
+];
+
+const flow = [
   [
     {
       "id": "A",
@@ -77,4 +98,13 @@ module.exports = [
       "component": "flow-item"
     },
   ]
-]
+];
+
+const pages = flow.flat();
+
+
+module.exports = {
+  flow: flow,
+  pages: pages,
+  standalone: standalone
+}
