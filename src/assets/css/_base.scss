@@ -47,6 +47,10 @@ body {
   z-index: 20; // prevents very tall first flow conditions breaking out and overlapping header/preview button
 }
 
+.govuk-footer__copyright-logo {
+	background-image: url("/assets/img/govuk-crest.png");
+}
+
 #flow-overview {
   min-height: 200px; // Temporary workaround of intermittent height calculation issues
   position: relative;
