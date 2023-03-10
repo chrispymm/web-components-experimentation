@@ -1,0 +1,54 @@
+{%- from "../../system/attribute-if-present.njk" import attributeIfPresent -%}
+
+<flow-item id="{{ params.id }}"
+           type="{{params.type | replace(' ', '') | lower }}"
+           variant="{{params.variant | replace(' ', '') | lower }}"
+           data-row="{{ params.row }}"
+           data-col="{{ params.col }}"
+           href="{{ params.href }}"
+           data-title="{{ params.title }}"
+           {{ attributeIfPresent('data-next', params.next) }}
+           {{ attributeIfPresent('data-prev', params.prev) }}
+           {{ attributeIfPresent('aria-label', params.label ) }}
+           >
+
+  <h2>
+    <a href="{{ params.href if params.href else '#' }}" class="govuk-link govuk-link--no-visited-state">
+      <span class="sr-only">Edit page: </span>{{ params.title }}<span class="sr-only">, {{ params.type }} page</span>
+    </a>
+  </h2>
+
+  {% if params.flow %}
+
+  {{ component('activated-menu', {
+    triggerLabel: 'Page actions',
+    items: params.page_menu_items,
+    classes: {
+      trigger: 'icon-button',
+      menu: 'page-menu'
+    },
+    noJs: {
+      hideActivator: true
+    }
+  }) }}
+
+
+  {% if params.type not in ['Confirmation', 'Exit'] %}
+
+    <div class="line line-h line-h--with-arrow"></div>
+
+    {{ component('activated-menu', {
+      triggerLabel: 'Add page',
+      items: params.connection_menu_items,
+      classes: {
+        trigger: 'icon-button icon-button--plus',
+        menu: 'connection-menu'
+      },
+      noJs: {
+        hideMenu: true
+      }
+      }) }}
+    {% endif %}
+  {% endif %}
+</flow-item>
+

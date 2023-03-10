@@ -1,0 +1,99 @@
+activated-menu ul {
+  list-style-type: none;
+  display: flex;
+  gap: 1rem;
+}
+
+
+
+
+.activated-menu {
+  position: relative;
+
+  button {
+    @include button_type_link;
+    border: none;
+    display: block;
+    width:100%;
+    padding: 10px;
+    text-align: left;
+
+    &.destructive:hover {
+      background-color: $govuk-error-colour;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &:focus {
+      @include focus;
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  span {
+    display: block;
+    padding-right: 30px;
+    position: relative;
+    width: 100%;
+
+    &[aria-haspopup] {
+      &:after {
+        content: ">";
+        font-family: monospace;
+        font-size: 22px;
+        height: 100%;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        vertical-align: middle;
+      }
+    }
+
+    &[aria-checked="true"] {
+      &:after {
+        content: "\2713";
+        font-size: 16px;
+        height: 100%;
+        position: absolute;
+        right: 10px;
+        top: 12px;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  ul {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.activated-menu__panel {
+  background: white;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  border: 2px solid $govuk-link-colour;
+  width: 260px;
+}
+
+
+.activated-menu[status="closed"] > .activated-menu__panel {
+  display: none;
+}
+
+.activated-menu[status="open"] > .activated-menu__panel {
+  display: block;
+  z-index: 50;
+}
+
+.activated-menu .activated-menu .activated-menu__panel {
+  left: 100%;
+  top: -2px;
+}
+

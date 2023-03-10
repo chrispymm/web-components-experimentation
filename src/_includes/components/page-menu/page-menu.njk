@@ -1,0 +1,9 @@
+{% set items = [ 'Edit page', 'Preview page', 'Move page', 'Delete page' ] %}
+
+<activated-menu trigger-label="{{ params.triggerLabel }}">
+    <ul data-element="activated-menu-items">
+    {% for item in items %}
+        <li><a href="#">{{ item }}</a></li>
+    {% endfor %}
+    </ul>
+</activated-menu>

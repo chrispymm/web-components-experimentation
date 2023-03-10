@@ -1,0 +1,24 @@
+<section id="flow-standalone-pages" class="form-footer" data-component="Expander">
+  <expanding-section>
+    <h2 class="govuk-heading-s" data-element='expanding-section-trigger'>Form footer</h2>
+
+    <div data-element="expanding-section-panel">
+    <ul class="govuk-navigation pages">
+      {% for item in jugglingLicense.standalone %}
+        {% set col_index = loop.index %}
+        <li class="page">
+            {{ component( item.component, {
+              id: item.id,
+              row: 1,
+              col: col_index,
+              title: item.title,
+              type: item.type
+              })
+            }}
+        </li>
+      {% endfor %}
+  </ul>
+    </div>
+
+    </expanding-sesction>
+</section>

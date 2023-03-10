@@ -1,0 +1,32 @@
+{%- from "../../system/attribute-if-present.njk" import attributeIfPresent -%}
+{%- from "system/connection-menu-items.njk" import connectionMenuItems  -%}
+{%- from "system/page-menu-items.njk" import pageMenuItems -%}
+
+<flow-grid {{ attributeIfPresent('aria-labelledby', params.labelledBy) }} {{ attributeIfPresent('aria-describedby', params.describedBy) }}>
+
+
+
+  {% for col in params.flow %}
+    {% set col_index = loop.index %}
+    {% for item in col %}
+      {% set row_index = loop.index %}
+      {{ component( item.component, {
+        flow: true,
+        id: item.id,
+        href: '/pages/' ~ item.title | slugify ~ '/edit',
+        next: item.next,
+        prev: item.prev,
+        row: row_index,
+        col: col_index,
+        title: item.title,
+        type: item.type,
+        variant: item.variant,
+        conditions: item.conditions,
+        page_menu_items: pageMenuItems,
+        connection_menu_items: connectionMenuItems
+        })
+      }}
+    {% endfor %}
+  {% endfor %}
+
+</flow-grid>

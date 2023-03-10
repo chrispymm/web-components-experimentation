@@ -1,0 +1,27 @@
+// For when a user is signed in
+.fb-navigation-header {
+  color: govuk-colour("white");
+  float: right;
+
+  a {
+    &:link {
+      text-decoration: none;
+    }
+
+    &,
+    &:hover {
+      color: govuk-colour("white");
+      font: inherit;
+      text-decoration: underline;
+    }
+
+    &:hover {
+      color: govuk-colour("white");
+    }
+  }
+
+  li {
+    display: inline;
+    margin-left: govuk-spacing(2);
+  }
+}

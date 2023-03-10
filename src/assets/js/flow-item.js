@@ -1,19 +1,23 @@
+import getFocusableElements from './utils/get-focusable-elements.js';
+
 class FlowItem extends HTMLElement {
   constructor() {
     super()
   }
 
   connectedCallback() {
-    this.setAttribute('role', 'gridcell')
-    this.setAttribute('tabindex', '-1')
-    this.classList.add('enhanced')
-
-    this.makeInert();
-    this.setPositions();
-
-    this.addEventListener('focusin', this.onFocusIn);
-    this.addEventListener('focusout', this.onFocusOut);
-    this.addEventListener('keydown', this.handleKeyDown);
+    this.initialMarkup = this.innerHTML;
+    this.thumbnailHTML = `
+      <a href="${this.href}" aria-hidden="true" tabindex="-1">
+        <img class="header" alt="" src="/assets/img/thumbnails/thumbs_header.png">
+        <span class="text">${this.title}</span>
+        <img class="body" alt="" src="/assets/img/thumbnails/${this.thumbnail}">
+      </a>
+    `;
+    // only render when first attached into the DOM
+    if(!this.classList.contains('flow-item')) {
+      this.render();
+    }
   }
 
   disconnectedCallback() {
@@ -23,11 +27,15 @@ class FlowItem extends HTMLElement {
   }
 
   get interactiveElements() {
-    return this.querySelectorAll(':scope > h2 a, :scope > button, :scope > [role="grid"], :scope ul.conditions a, :scope ul.conditions button');
+    return this.querySelectorAll(':scope h2 a, :scope button:not(.activated-menu__panel *), :scope > [role="grid"], :scope ul.conditions a, :scope ul.conditions button:not(.activated-menu__panel *)');
   }
 
   get type() {
     return this.getAttribute('type');
+  }
+
+  get href() {
+    return this.getAttribute('href');
   }
 
   get variant() {
@@ -50,16 +58,39 @@ class FlowItem extends HTMLElement {
     return this.querySelector('a');
   }
 
-  setPositions() {
-    this.style.setProperty("--col-index", this.column);
-    this.style.setProperty("--row-index", this.row);
-    if(this.type == 'Branching point') {
-      let conditions = this.querySelectorAll('ul.conditions > li');
-      conditions.forEach( (condition) => {
-        condition.style.setProperty("--row-index", condition.dataset.row - 1)
-      })
+  get thumbnail() {
+    if(this.variant) {
+      return `thumbs_${this.variant}.jpg`;
+    } else {
+      return `thumbs_${this.type}.jpg`;
     }
   }
+
+  get title() {
+    return this.dataset.title;
+  }
+
+  render() {
+    this.innerHTML = `
+        <div class="flow-item__thumbnail">
+          ${this.thumbnailHTML}
+        </div>
+        ${this.initialMarkup}
+    `;
+
+    this.afterRender();
+  }
+
+  afterRender() {
+    this.classList.add('flow-item')
+  }
+
+  addKeyboardGridNavigation() {
+    this.addEventListener('focusin', this.onFocusIn);
+    this.addEventListener('focusout', this.onFocusOut);
+    this.addEventListener('keydown', this.handleKeyDown);
+  }
+
 
   makeInert() {
     this.classList.remove('active');
@@ -167,4 +198,8 @@ class FlowItem extends HTMLElement {
   }
 
 }
-customElements.define('flow-item', FlowItem)
+
+if ('customElements' in window) {
+  customElements.define('flow-item', FlowItem)
+}
+export default FlowItem;

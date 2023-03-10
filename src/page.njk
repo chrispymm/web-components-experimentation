@@ -1,0 +1,10 @@
+---
+layout: default.njk
+pagination:
+    data: jugglingLicense.pages
+    size: 1
+    alias: page
+permalink: "pages/{{ page.title | slugify }}/edit"
+---
+
+<h1>{{page.title}}</h1>

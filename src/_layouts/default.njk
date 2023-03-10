@@ -1,0 +1,20 @@
+---
+layout: 'base.njk'
+---
+
+<div class="page-wrapper">
+{% block header %}
+  {% include 'partials/header.njk' %}
+{% endblock %}
+
+{% block form_navigation %}{% endblock %}
+
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m" id="main-content" role="main">
+  {{ content | safe }}
+  </main>
+
+{% block footer %}
+  {% include 'partials/footer.njk' %}
+{% endblock %}
+</div>
+

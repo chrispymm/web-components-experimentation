@@ -1,0 +1,21 @@
+{%- from "../../system/attribute-if-present.njk" import attributeIfPresent -%}
+<activated-menu class="{{ params.classes.menu }}" trigger-label="{{params.triggerLabel}}" {{ attributeIfPresent('trigger-class', params.classes.trigger) }}>
+    {% if not params.noJs.hideActivator %}
+        <a href="#" data-element="activated-menu-trigger" class="{{ params.triggerClass if params.triggerClass }}">{{ params.triggerLabel }}</a>
+    {% endif %}
+
+    <ul data-element="activated-menu-items" {{ attributeIfPresent('hidden', params.noJs.hideMenu) }}>
+    {% for item in params.items %}
+        <li>
+            {% if item.children %}
+                {{ component('activated-menu', {
+                    items: item.children,
+                    triggerLabel: item.title
+                }) }}
+            {% else %}
+                <a href="#">{{ item.title }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+</activated-menu>
