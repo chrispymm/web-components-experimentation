@@ -132,7 +132,7 @@ top: calc(50% - 17px);
 
 
 
-.line-h--with-arrow {
+.flow-item .line-h--with-arrow {
   &::after {
     content: '';
     position: absolute;
