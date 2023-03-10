@@ -26,7 +26,7 @@ module.exports = [
       "prev": "B",
       "title": "Branching point 1",
       "type": "Branching point",
-      "component": "branching-point",
+      "component": "flow-branch",
       "conditions": [
         {
           "question": "What are you juggling with?",

@@ -8,19 +8,19 @@ flow-item h2 {
   margin-right: auto;
 }
 
-
+flow-grid.enhanced .flow-item {
+  position: absolute;
+  left: calc(var(--left) * 1px);
+  top: calc(var(--top) * 1px);
+}
 
 .flow-item {
-  position: absolute;
   display: block;
   width: var(--item-width);
   height: var(--item-height);
-  left: calc(var(--left) * 1px);
-  top: calc(var(--top) * 1px);
   overflow: visible;
   background-color: govuk-colour("white");
   border:  $govuk-link-colour solid 2px;
-
   word-break: break-word;
 
   &:hover {
@@ -55,19 +55,19 @@ flow-item h2 {
     }
 
   }
-    /* Special case for styling the title */
-    &[type="confirmation"] .flow-item__thumbnail {
-      span {
-        background-color: $govuk-success-colour;
-        color: govuk-colour("white");
-        max-width: 72%;
-        padding: 10px 5px;
-        text-align: center;
-      }
 
-      img.body {
-        display: none;
-      }
+  /* Special case for styling the title */
+  &[type="confirmation"] .flow-item__thumbnail {
+    span {
+      background-color: $govuk-success-colour;
+      color: govuk-colour("white");
+      max-width: 72%;
+      padding: 10px 5px;
+      text-align: center;
     }
 
+    img.body {
+      display: none;
+    }
+  }
 }

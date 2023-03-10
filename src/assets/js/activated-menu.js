@@ -57,7 +57,7 @@ class ActivatedMenu extends HTMLElement {
   }
 
   get triggerClass() {
-    return this.getAttribute('trigger-class');
+    return this.getAttribute('trigger-class')
   }
 
   get items() {
@@ -252,7 +252,6 @@ class ActivatedMenu extends HTMLElement {
         this.focusableElements.forEach(element => element.removeAttribute('tabindex'));
         break;
       case 'closed':
-        console.log(this.focusableElements);
         [...this.focusableElements]
           .filter(
             element => element.getAttribute('data-element') !== 'activated-menu-trigger'

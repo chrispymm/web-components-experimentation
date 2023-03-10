@@ -12,7 +12,7 @@
            {{ attributeIfPresent('aria-label', params.label ) }}>
 
   <h2>
-    <a href="#" class="govuk-link" >
+    <a href="#" class="govuk-link govuk-link--no-visited-state" >
       <span class="sr-only">Edit page: </span>{{ params.title }}<span class="sr-only">, {{ params.type }} page</span>
     </a>
   </h2>
@@ -20,6 +20,10 @@
   {{ component('activated-menu', {
     triggerLabel: 'Branch actions',
     items: params.page_menu_items,
+    classes: {
+      menu: 'page-menu',
+      trigger: 'icon-button'
+    },
     noJs: {
       hideActivator: true
     }
@@ -29,23 +33,37 @@
   <ul class="conditions">
     {% for condition in params.conditions %}
         <li data-row="{{ params.row + loop.index0 }}">
-          <h3><a href="#{{condition.target_id}}" data-target="{{condition.target_id}}" >
+          <h3>
+            <a href="#{{condition.target_id}}" data-target="{{condition.target_id}}" >
                 <span class="sr-only">Branch {{loop.index}} of {{loop.length}}: </span>
                 {% if condition.question %}
-                  If {{condition.question}} <b>{{condition.operator}}</b> {{condition.value}}
+                  <span class="sr-only">If</span>
+                  <span class="question">{{condition.question}}</span>
+                  <span class="operator">{{condition.operator}}</span>
+                  <span class="answer">{{condition.value}}</span>
                 {% else %}
-                  Otherwise
+                  <span class="question">Otherwise</span>
                 {% endif %}
                 {% set id = condition.target_id %}
                 <span class="sr-only">, go to {{flow[id].title}}</span>
-            </a></h3>
+            </a>
+          </h3>
+
+          {% if loop.index > 1 %}
+            <div class="line-v"></div>
+          {% endif %}
+          <div class="line-h line-h--with-arrow"></div>
 
           {{ component('activated-menu', {
-            triggerLabel: 'Add page',
-            items: params.connection_menu_items,
-            noJs: {
-              hideMenu: true
-            }
+              triggerLabel: 'Add page',
+              classes: {
+                menu: 'connection-menu',
+                trigger: 'icon-button icon-button--plus'
+              },
+              items: params.connection_menu_items,
+              noJs: {
+                hideMenu: true
+              }
           }) }}
         </li>
     {% endfor %}

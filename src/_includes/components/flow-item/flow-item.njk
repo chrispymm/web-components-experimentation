@@ -13,28 +13,42 @@
            >
 
   <h2>
-    <a href="{{ params.href if params.href else '#' }}" class="govuk-link">
+    <a href="{{ params.href if params.href else '#' }}" class="govuk-link govuk-link--no-visited-state">
       <span class="sr-only">Edit page: </span>{{ params.title }}<span class="sr-only">, {{ params.type }} page</span>
     </a>
   </h2>
 
+  {% if params.flow %}
+
   {{ component('activated-menu', {
     triggerLabel: 'Page actions',
     items: params.page_menu_items,
-    triggerClass: 'icon-button page-menu',
+    classes: {
+      trigger: 'icon-button',
+      menu: 'page-menu'
+    },
     noJs: {
       hideActivator: true
     }
   }) }}
 
-  {{ component('activated-menu', {
-    triggerLabel: 'Add page',
-    items: params.connection_menu_items,
-    triggerClass: 'icon-button connection-menu',
-    noJs: {
-      hideMenu: true
-    }
-  }) }}
 
+  {% if params.type not in ['Confirmation', 'Exit'] %}
+
+    <div class="line line-h line-h--with-arrow"></div>
+
+    {{ component('activated-menu', {
+      triggerLabel: 'Add page',
+      items: params.connection_menu_items,
+      classes: {
+        trigger: 'icon-button icon-button--plus',
+        menu: 'connection-menu'
+      },
+      noJs: {
+        hideMenu: true
+      }
+      }) }}
+    {% endif %}
+  {% endif %}
 </flow-item>
 

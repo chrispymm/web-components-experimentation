@@ -7,7 +7,6 @@ class FlowBranch extends FlowItem {
   }
 
   connectedCallback(){
-    console.log('flow branch coinnected')
     this.uuid = this.#generateUUID();
     this.initialMarkup = this.innerHTML;
     this.thumbnailHTML = `
@@ -38,10 +37,13 @@ class FlowBranch extends FlowItem {
     this.classList.add('flow-item')
     this.classList.add('flow-branch')
 
-    this.makeInert();
     this.#insertDiamondSVG();
     this.setBranchConditionPositions();
 
+    this.addKeyboardGridNavigation();
+  }
+
+  addKeyboardGridNavigation() {
     this.addEventListener('focusin', this.onFocusIn);
     this.addEventListener('focusout', this.onFocusOut);
     this.addEventListener('keydown', this.handleKeyDown);

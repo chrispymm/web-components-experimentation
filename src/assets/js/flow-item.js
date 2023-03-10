@@ -14,7 +14,10 @@ class FlowItem extends HTMLElement {
         <img class="body" alt="" src="/assets/img/thumbnails/${this.thumbnail}">
       </a>
     `;
-    this.render();
+    // only render when first attached into the DOM
+    if(!this.classList.contains('flow-item')) {
+      this.render();
+    }
   }
 
   disconnectedCallback() {
@@ -79,12 +82,10 @@ class FlowItem extends HTMLElement {
   }
 
   afterRender() {
-    this.setAttribute('role', 'gridcell')
-    this.setAttribute('tabindex', '-1')
     this.classList.add('flow-item')
+  }
 
-    this.makeInert();
-
+  addKeyboardGridNavigation() {
     this.addEventListener('focusin', this.onFocusIn);
     this.addEventListener('focusout', this.onFocusOut);
     this.addEventListener('keydown', this.handleKeyDown);
@@ -110,7 +111,6 @@ class FlowItem extends HTMLElement {
   }
 
   focusNext() {
-    console.log(this.interactiveElements)
     let index = this.currentFocusIndex;
     if(index === undefined) index = -1
     ++index;
@@ -167,7 +167,6 @@ class FlowItem extends HTMLElement {
       case 'ArrowDown':
         event.preventDefault();
         if(this.isInteractive) {
-          console.log('flow item arrow')
           this.focusNext();
         }
         break;

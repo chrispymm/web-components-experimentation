@@ -1,6 +1,6 @@
 const ITEM_WIDTH = 200;
 const ITEM_HEIGHT = 125;
-const CONDITION_WIDTH = 450;
+const CONDITION_WIDTH = 300;
 const GAP_X = 100;
 const GAP_Y = 130;
 
@@ -10,19 +10,8 @@ class FlowGrid extends HTMLElement {
   }
 
   connectedCallback() {
-    this.setAttribute('role', 'grid')
-    this.setAttribute('tabindex', '0')
-    this.classList.add('enhanced');
-
-    this.createGridRow();
-    this.setStyleProps();
-    this.setItemPositions();
-    this.setHeight();
-    this.setWidth();
-
-    this.addEventListener('focusin', this.onFocusIn);
-    this.addEventListener('focusout', this.onFocusOut);
-    this.addEventListener('keydown', this.handleKeyDown);
+    this.initialMarkup = this.innerHTML;
+    this.render();
   }
 
   disconnectedCallback() {
@@ -32,20 +21,30 @@ class FlowGrid extends HTMLElement {
   }
 
   get items() {
-    return this.querySelectorAll('[role="gridcell"]');
+    return this.querySelectorAll('.flow-item, .flow-branch');
   }
 
-  createGridRow() {
-    const row = document.createElement('div');
-    row.setAttribute('role', 'row');
+  render() {
+    this.innerHTML = `
+      <div role="row">
+        ${this.initialMarkup}
+      </div>
+    `
 
-    const elements = Array.from(this.childNodes);
-    if (elements && elements.length) {
-      elements[0].parentNode.insertBefore(row, elements[0]);
-      for (var i in elements) {
-        row.appendChild(elements[i]);
-      }
-    }
+    this.setAttribute('role', 'grid')
+    this.setAttribute('tabindex', '0')
+    this.classList.add('enhanced');
+
+    this.setStyleProps();
+    this.setItemPositions();
+    this.setItemProperties();
+    this.setHeight();
+    this.setWidth();
+
+    this.addEventListener('focusin', this.onFocusIn);
+    this.addEventListener('focusout', this.onFocusOut);
+    this.addEventListener('keydown', this.handleKeyDown);
+
   }
 
   setHeight() {
@@ -77,6 +76,15 @@ class FlowGrid extends HTMLElement {
     const gaps = (cols.length - 1) * 100;
     const width = itemsWidth + branchesWidth + gaps;
     this.style.width = width+'px';
+  }
+
+  setItemProperties() {
+    this.items.forEach( (item) => {
+      item.setAttribute('role', 'gridcell');
+      item.setAttribute('tabindex', '-1');
+      item.makeInert();
+      item.addKeyboardGridNavigation();
+    });
   }
 
   setItemPositions() {

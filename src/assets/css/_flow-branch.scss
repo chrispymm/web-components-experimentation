@@ -12,7 +12,7 @@ flow-branch > *:first-child {
   gap: 1rem;
 }
 
-flow-branch ul.conditions li {
+flow-branch ul.conditions > li {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -106,27 +106,24 @@ flow-branch ul.conditions li {
     }
   }
 
-// .PageMenuActivator {
-  //   bottom: 10px;
-  //   left: 82px;
-  //   top: calc(125px - 45px);
-  // }
 }
 
 .flow-branch ul.conditions,
 .flow-branch branch-conditions {
   position: absolute;
-  left: calc( (var(--item-width) + var(--gap-x)));
+  left: 0;
   top: 0;
   width: var(--condition-width);
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.flow-branch ul.conditions li,
+.flow-branch ul.conditions > li,
 .flow-branch branch-conditions branch-condition {
   position: absolute;
   width: calc(var(--condition-width) - var(--gap-x));
-  left: 0;
+  left: var(--item-width);
   top: calc( (var(--item-height) + var(--gap-y))  * var(--row-index));
 }
 
@@ -140,4 +137,37 @@ branch-condition:focus-visible {
 }
 branch-condition.active {
   outline: 3px solid red;
+}
+
+.flow-branch ul.conditions > li {
+  @include list_reset;
+  margin: 0 100px 0 0;
+  padding: 0 25px;
+  // text-align: center;
+
+  h3 {
+    margin: 0;
+  }
+
+  a {
+    @extend %govuk-link;
+    @include govuk-link-style-muted;
+    text-decoration: none;
+  }
+
+ .operator {
+    color: $govuk-secondary-text-colour;
+    font-weight: bold;
+  }
+
+  .condition-operator {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
+.flow-branch ul.conditions > li {
+  position: absolute;
+  height:var(--item-height);
+  top: calc( (var(--item-height) / 2 * -1) + (var(--row-index) * (var(--item-height) + var(--gap-y))) );
+  align-items: flex-end;
 }

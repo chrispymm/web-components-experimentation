@@ -1,5 +1,5 @@
 {%- from "../../system/attribute-if-present.njk" import attributeIfPresent -%}
-<activated-menu trigger-label="{{params.triggerLabel}}" {{ attributeIfPresent('trigger-class', params.triggerClass) }}>
+<activated-menu class="{{ params.classes.menu }}" trigger-label="{{params.triggerLabel}}" {{ attributeIfPresent('trigger-class', params.classes.trigger) }}>
     {% if not params.noJs.hideActivator %}
         <a href="#" data-element="activated-menu-trigger" class="{{ params.triggerClass if params.triggerClass }}">{{ params.triggerLabel }}</a>
     {% endif %}

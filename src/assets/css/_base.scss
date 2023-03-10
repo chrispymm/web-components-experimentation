@@ -1,5 +1,8 @@
 :root {
-
+  --item-width: 200px;
+  --item-height: 125px;
+  --gap-x: 100px;
+  --gap-y: 125px;
 }
 
 html, body {
@@ -22,43 +25,143 @@ body {
 
 }
 
+#header-logo-link {
+	display: inline-block;
+	margin-right: 10px;
+	position: relative;
+	top: -2px;
+	vertical-align: middle;
+}
+
 #main-content {
   position: relative;
+  width: 100%;
 }
 
 #ServicesContentScrollContainer {
   // Due to layout element of GDS templates, the scroll dimensions
   // need to be calculated by JS (cannot just use width:100%).
-  background-color: govuk-colour("white");
   box-sizing: border-box;
   overflow: visible;
   position: relative;
-  z-index: 0; // prevents very tall first flow conditions breaking out and overlapping header/preview button
+  z-index: 20; // prevents very tall first flow conditions breaking out and overlapping header/preview button
 }
 
 #flow-overview {
-  background-color: govuk-colour("white");
   min-height: 200px; // Temporary workaround of intermittent height calculation issues
   position: relative;
 }
 
-#flow-overview .flow-item .page-menu {
+.flow-item .page-menu {
   display: inline-block;
-left: 157px;
-// opacity: 0;
-overflow: hidden;
-position: absolute;
-top: 82px;
+  left: 157px;
+  opacity: 0;
+  position: absolute;
+  top: 82px;
+}
+
+.page-menu:hover,
+.flow-item__thumbnail:hover ~ .page-menu {
+  opacity: 1;
+}
+
+.flow-item .page-menu:focus-within {
+  opacity: 1;
 }
 
 #flow-overview .flow-item .connection-menu {
 display: inline-block;
-left: calc(100% + 10px);
-overflow: hidden;
 position: absolute;
-top: 46px;
+left: calc(100% + 10px);
+top: calc(50% - 17px);
 }
 
+#flow-overview .flow-branch .page-menu {
+  display: inline-block;
+  left: 82px;
+  top: 80px;
+}
+
+
+#flow-overview .flow-branch .conditions .connection-menu {
+  left: calc(100% - 17px);
+  top: calc(100% - 17px);
+}
+
+.form-footer {
+  ul {
+    display: flex;
+    gap:  var(--gap-x);
+  }
+}
+
+.line {
+  --stroke-width: 2px;
+  --arrow-width: 12px;
+  --arrow-height: 6px;
+  --color: #949494;
+
+  position: absolute;
+  background: var(--color);
+
+  &:hover {
+    --color: #003078;
+    --stroke-width: 4px;
+  }
+}
+
+.line-h {
+  height: var(--stroke-width);
+}
+
+.line-v {
+  width: var(--stroke-width);
+}
+
+.flow-item .line-h {
+  @extend .line;
+
+  bottom: calc(  (var(--item-height) / 2) - (var(--stroke-width) / 2));
+  left: calc(var(--item-width) + 2px);
+  width: calc(var(--gap-x) - 4px);
+}
+
+.flow-item .line-v {
+  @extend .line;
+}
+
+
+
+.line-h--with-arrow {
+  &::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--arrow-height) * -1);
+    right: 0px;
+    width: 0px;
+    height: var(--stroke-width);
+    border-top: var(--arrow-height) solid transparent;
+    border-bottom: var(--arrow-height) solid transparent;
+    border-left: var(--arrow-width) solid var(--color);
+  }
+}
+
+.flow-branch .conditions li .line-h {
+  bottom: calc( (var(--stroke-width) / 2) * -1);
+  left: 0;
+  width: calc(var(--condition-width) + var(--gap-x));
+}
+
+.flow-branch .conditions li:not(:first-child) .line-h {
+  left: calc(var(--item-width) / 2 * -1);
+  width: calc(var(--condition-width) + var(--gap-x) + var(--item-width) / 2 );
+}
+
+.flow-branch .conditions li .line-v {
+  top: calc( var(--item-height) - ( var(--row-index) * (var(--item-height) + var(--gap-y)) - (var(--item-height) / 2) ));
+  left: calc( var(--item-width) / 2 * -1 - var(--stroke-width) / 2 );
+  height: calc( (var(--item-height) / 2 * -1) + (var(--row-index) * (var(--item-height) + var(--gap-y))) );
+}
 
 
 ///////////////////////
@@ -125,7 +228,27 @@ h2, h3 {
   white-space: nowrap !important;
 }
 
+.fb-govuk-button {
+  // govuk-button style is green but we want blue buttons on fb-editor.
+  @include fb-govuk-button;
+}
 
+.fb-govuk-button--inline {
+  width: auto;
+}
+
+.fb-link-button {
+  @include button_as_link;
+}
+
+.fb-govuk-button-inverted {
+  @include button_type_link;
+}
+
+.fb-govuk-button-inverted {
+  @include button_type_link;
+  box-shadow: none; // 0 1px 0 #002d18;
+}
 
 [hidden] {
   display: none;

@@ -9,6 +9,7 @@
     {% for item in col %}
       {% set row_index = loop.index %}
       {{ component( item.component, {
+        flow: true,
         id: item.id,
         next: item.next,
         prev: item.prev,
