@@ -2,7 +2,7 @@
 {%- from "system/connection-menu-items.njk" import connectionMenuItems  -%}
 {%- from "system/page-menu-items.njk" import pageMenuItems -%}
 
-<flow-grid {{ attributeIfPresent('aria-labelledby', params.labelledBy) }} {{ attributeIfPresent('aria-describedby', params.describedBy) }}>
+<flow-grid {{ attributeIfPresent('aria-labelledby', params.labelledBy) }} {{ attributeIfPresent('aria-describedby', params.describedBy) }} cloak>
 
 
 

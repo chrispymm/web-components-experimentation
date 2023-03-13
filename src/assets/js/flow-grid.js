@@ -41,6 +41,7 @@ class FlowGrid extends HTMLElement {
     this.setHeight();
     this.setWidth();
 
+    this.removeAttribute('cloak');
     this.addEventListener('focusin', this.onFocusIn);
     this.addEventListener('focusout', this.onFocusOut);
     this.addEventListener('keydown', this.handleKeyDown);
