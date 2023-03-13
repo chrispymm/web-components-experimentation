@@ -27,6 +27,13 @@ flow-grid.enhanced .flow-item {
     border-color: $govuk-link-hover-colour;
   }
 
+  &:focus {
+    outline: 3px solid $govuk-focus-colour;
+  }
+  &:focus-within {
+    outline: 3px solid $govuk-focus-colour;
+  }
+
   .flow-item__thumbnail {
     display: block;
     height: 100%;

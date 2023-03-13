@@ -33,3 +33,7 @@ flow-grid.enhanced > [role="row"]  > * + * {
 flow-grid.enhanced > .active {
   outline: 3px solid red;
 }
+
+flow-grid.enhanced:focus {
+  outline: 3px solid $govuk-focus-colour;
+}

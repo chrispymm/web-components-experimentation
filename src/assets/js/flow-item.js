@@ -183,8 +183,11 @@ class FlowItem extends HTMLElement {
         this.currentFocusIndex = undefined;
         break;
       case 'Enter':
+        console.log('flow item enter');
         if(this.isInteractive) {
+        console.log('its interactive!');
           event.stopPropagation();
+        console.log('proagation is stopped');
           const nextItem = this.grid.querySelector('#'+event.target.dataset.target);
           if(nextItem) {
             event.preventDefault();

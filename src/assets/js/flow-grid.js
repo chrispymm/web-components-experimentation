@@ -189,6 +189,8 @@ class FlowGrid extends HTMLElement {
           }
           break;
         case 'Enter':
+        event.preventDefault();
+          console.log('flow grid enter');
           if(this.focusedItem) {
             this.navigating = false;
             this.activeItem = this.focusedItem;
