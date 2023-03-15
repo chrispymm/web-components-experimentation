@@ -27,7 +27,15 @@ class FlowItem extends HTMLElement {
   }
 
   get interactiveElements() {
-    return this.querySelectorAll(':scope h2 a, :scope button:not(.activated-menu__panel *), :scope > [role="grid"], :scope ul.conditions a, :scope ul.conditions button:not(.activated-menu__panel *)');
+    const elements = this.querySelectorAll(':scope h2 a, \
+      :scope button:not(.activated-menu__panel *), \
+      :scope a:not(.activated-menu__panel *), \
+      :scope > [role="grid"], \
+      :scope ul.conditions a, \
+      :scope ul.conditions button:not(.activated-menu__panel *) \
+      :scope ul.conditions a:not(.activated-menu__panel *) \
+    ');
+    return elements;
   }
 
   get type() {
@@ -183,11 +191,8 @@ class FlowItem extends HTMLElement {
         this.currentFocusIndex = undefined;
         break;
       case 'Enter':
-        console.log('flow item enter');
         if(this.isInteractive) {
-        console.log('its interactive!');
           event.stopPropagation();
-        console.log('proagation is stopped');
           const nextItem = this.grid.querySelector('#'+event.target.dataset.target);
           if(nextItem) {
             event.preventDefault();

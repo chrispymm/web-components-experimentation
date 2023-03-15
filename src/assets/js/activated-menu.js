@@ -1,5 +1,5 @@
 import getFocusableElements from './utils/get-focusable-elements.js';
-import { tabbable } from 'tabbable';
+import { tabbable } from './utils/tabbable.js';
 
 class ActivatedMenu extends HTMLElement {
 
